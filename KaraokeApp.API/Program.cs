@@ -12,6 +12,8 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
 }
 
+Console.WriteLine("Prueba COMMIT");
+
 app.UseHttpsRedirection();
 
 var summaries = new[]
