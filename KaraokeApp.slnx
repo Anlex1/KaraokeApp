@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="KaraokeApp.API/KaraokeApp.API.csproj" />
+  <Project Path="KaraokeApp.Core/KaraokeApp.Core.csproj" />
+  <Project Path="KaraokeApp.Infrastructure/KaraokeApp.Infrastructure.csproj" />
+</Solution>
