@@ -1,12 +1,14 @@
 ﻿using KaraokeApp.Core.DTOs.Usuario;
 using KaraokeApp.Core.Entities;
 using KaraokeApp.Core.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace KaraokeApp.API.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize(Roles = "Admin")]
 public class UsuarioController : ControllerBase
 {
     private readonly IUsuarioRepository _repo;

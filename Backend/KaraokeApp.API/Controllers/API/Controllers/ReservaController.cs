@@ -1,12 +1,14 @@
 ﻿using KaraokeApp.Core.DTOs.Reserva;
 using KaraokeApp.Core.Entities;
 using KaraokeApp.Core.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace KaraokeApp.API.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize(Roles = "Admin, Empleado")]
 public class ReservaController : ControllerBase
 {
     private readonly IReservaRepository _reservaRepo;
@@ -37,6 +39,7 @@ public class ReservaController : ControllerBase
         return reserva is null ? NotFound() : Ok(reserva);
     }
 
+    [AllowAnonymous]
     [HttpGet("sala/{idSala}/activa")]
     public async Task<IActionResult> GetBySalaActiva(int idSala)
     {

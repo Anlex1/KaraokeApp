@@ -1,12 +1,14 @@
 ﻿using KaraokeApp.Core.DTOs.Sala;
 using KaraokeApp.Core.Entities;
 using KaraokeApp.Core.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace KaraokeApp.API.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize]
 public class SalaController : ControllerBase
 {
     private readonly ISalaRepository _repo;
@@ -16,18 +18,21 @@ public class SalaController : ControllerBase
         _repo = repo;
     }
 
-    [HttpGet]
-    public async Task<IActionResult> GetAll()
-    {
-        return Ok(await _repo.GetAllAsync());
-    }
-
+    [AllowAnonymous]
     [HttpGet("disponibles")]
     public async Task<IActionResult> GetDisponibles()
     {
         return Ok(await _repo.GetDisponibles());
     }
 
+    [Authorize(Roles = "Admin, Empleado")]
+    [HttpGet]
+    public async Task<IActionResult> GetAll()
+    {
+        return Ok(await _repo.GetAllAsync());
+    }
+
+    [Authorize(Roles = "Admin, Empleado")]
     [HttpGet("{id}")]
     public async Task<IActionResult> GetById(int id)
     {
@@ -35,6 +40,7 @@ public class SalaController : ControllerBase
         return sala is null ? NotFound() : Ok(sala);
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpPost]
     public async Task<IActionResult> Crear([FromBody] CrearSalaDto dto)
     {
@@ -49,6 +55,7 @@ public class SalaController : ControllerBase
         return CreatedAtAction(nameof(GetById), new { id = sala.IdSala }, sala);
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpPut("{id}")]
     public async Task<IActionResult> Actualizar(int id, [FromBody] ActualizarSalaDto dto)
     {
@@ -63,6 +70,7 @@ public class SalaController : ControllerBase
         return NoContent();
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpPatch("{id}/desactivar")]
     public async Task<IActionResult> Desactivar(int id)
     {

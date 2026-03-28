@@ -1,12 +1,14 @@
 ﻿using KaraokeApp.Core.DTOs.Pedido;
 using KaraokeApp.Core.Entities;
 using KaraokeApp.Core.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace KaraokeApp.API.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize]
 public class PedidoController : ControllerBase
 {
     private readonly IPedidoRepository _pedidoRepo;
@@ -18,11 +20,14 @@ public class PedidoController : ControllerBase
         _productoRepo = productoRepo;
     }
 
+    [Authorize(Roles = "Admin,Empleado")]
     [HttpGet]
     public async Task<IActionResult> GetAll()
     {
         return Ok(await _pedidoRepo.GetAllAsync());
     }
+
+    [Authorize(Roles = "Admin,Empleado")]
 
     [HttpGet("pendientes")]
     public async Task<IActionResult> GetPendientes()
@@ -30,12 +35,14 @@ public class PedidoController : ControllerBase
         return Ok(await _pedidoRepo.GetPendientesAsync());
     }
 
+    [AllowAnonymous]
     [HttpGet("reserva/{idReserva}")]
     public async Task<IActionResult> GetByReserva(int idReserva)
     {
         return Ok(await _pedidoRepo.GetByReservaAsync(idReserva));
     }
 
+    [Authorize(Roles = "Admin,Empleado")]
     [HttpGet("{id}")]
     public async Task<IActionResult> GetById(int id)
     {
@@ -43,6 +50,7 @@ public class PedidoController : ControllerBase
         return pedido is null ? NotFound() : Ok(pedido);
     }
 
+    [AllowAnonymous]
     [HttpPost]
     public async Task<IActionResult> Crear([FromBody] CrearPedidoDto dto)
     {
@@ -84,6 +92,7 @@ public class PedidoController : ControllerBase
         return CreatedAtAction(nameof(GetById), new { id = pedido.IdPedido }, pedido);
     }
 
+    [Authorize(Roles = "Admin,Empleado")]
     [HttpPatch("{id}/estado")]
     public async Task<IActionResult> ActualizarEstado(int id, [FromBody] ActualizarEstadoPedidoDto dto)
     {

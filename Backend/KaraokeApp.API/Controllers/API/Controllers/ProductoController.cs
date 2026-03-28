@@ -1,12 +1,14 @@
 ﻿using KaraokeApp.Core.DTOs.Producto;
 using KaraokeApp.Core.Entities;
 using KaraokeApp.Core.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace KaraokeApp.API.Controllers.API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class ProductoController : ControllerBase
     {
         private readonly IProductoRepository _repo;
@@ -16,18 +18,17 @@ namespace KaraokeApp.API.Controllers.API.Controllers
             _repo = repo;
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetAll()
-        {
-            return Ok(await _repo.GetAllAsync());
-        }
-
+        [AllowAnonymous]
         [HttpGet("activos")]
-        public async Task<IActionResult> GetActivos()
-        {
-            return Ok(await _repo.GetActivosAsync());
-        }
+        public async Task<IActionResult> GetActivos() =>
+            Ok(await _repo.GetActivosAsync());
 
+        [Authorize(Roles = "Admin")]
+        [HttpGet]
+        public async Task<IActionResult> GetAll() =>
+            Ok(await _repo.GetAllAsync());
+
+        [Authorize(Roles = "Admin")]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
@@ -35,6 +36,7 @@ namespace KaraokeApp.API.Controllers.API.Controllers
             return producto is null ? NotFound() : Ok(producto);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> Crear([FromBody] CrearProductoDto dto)
         {
@@ -49,6 +51,7 @@ namespace KaraokeApp.API.Controllers.API.Controllers
             return CreatedAtAction(nameof(GetById), new { id = producto.IdProducto }, producto);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPut("{id}")]
         public async Task<IActionResult> Actualizar(int id, [FromBody] ActualizarProductoDto dto)
         {
@@ -64,6 +67,7 @@ namespace KaraokeApp.API.Controllers.API.Controllers
             return NoContent();
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPatch("{id}/desactivar")]
         public async Task<IActionResult> Desactivar(int id)
         {
