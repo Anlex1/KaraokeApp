@@ -1,6 +1,7 @@
 ﻿using KaraokeApp.Core.DTOs.Sala;
 using KaraokeApp.Core.Entities;
 using KaraokeApp.Core.Interfaces;
+using KaraokeApp.Infrastructure.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,10 +13,12 @@ namespace KaraokeApp.API.Controllers;
 public class SalaController : ControllerBase
 {
     private readonly ISalaRepository _repo;
+    private readonly QrService _qrService;
 
-    public SalaController(ISalaRepository repo)
+    public SalaController(ISalaRepository repo, QrService qrService)
     {
         _repo = repo;
+        _qrService = qrService;
     }
 
     [AllowAnonymous]
@@ -80,5 +83,23 @@ public class SalaController : ControllerBase
         sala.Estado = "Inactiva";
         await _repo.UpdateAsync(sala);
         return NoContent();
+    }
+
+    [AllowAnonymous]
+    [HttpGet("{id}/qr")]
+    public async Task<IActionResult> GetQr(int id)
+    {
+        var sala = await _repo.GetByIdAsync(id);
+        if (sala is null) return NotFound();
+        if (sala.Estado == "Inactiva") return BadRequest("La sala no está activa");
+
+        var qrBase64 = _qrService.GenerarQrBase64(id);
+        return Ok(new
+        {
+            idSala = id,
+            numeroSala = sala.NumeroSala,
+            qrBase64,
+            qrDataUrl = $"data:image/png;base64,{qrBase64}"
+        });
     }
 }

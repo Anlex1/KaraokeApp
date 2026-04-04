@@ -1,6 +1,7 @@
 ﻿using KaraokeApp.Core.DTOs.Reserva;
 using KaraokeApp.Core.Entities;
 using KaraokeApp.Core.Interfaces;
+using KaraokeApp.Infrastructure.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,11 +14,13 @@ public class ReservaController : ControllerBase
 {
     private readonly IReservaRepository _reservaRepo;
     private readonly ISalaRepository _salaRepo;
+    private readonly QrService _qrService;
 
-    public ReservaController(IReservaRepository reservaRepo, ISalaRepository salaRepo)
+    public ReservaController(IReservaRepository reservaRepo, ISalaRepository salaRepo, QrService qrService)
     {
         _reservaRepo = reservaRepo;
         _salaRepo = salaRepo;
+        _qrService = qrService;
     }
 
     [HttpGet]
@@ -68,11 +71,22 @@ public class ReservaController : ControllerBase
 
         await _reservaRepo.AddAsync(reserva);
 
-        // Cambiar sala a Ocupada
         sala.Estado = "Ocupada";
         await _salaRepo.UpdateAsync(sala);
 
-        return CreatedAtAction(nameof(GetById), new { id = reserva.IdReserva }, reserva);
+        // Generar QR al crear la reserva
+        var qrBase64 = _qrService.GenerarQrBase64(dto.IdSala);
+
+        return CreatedAtAction(nameof(GetById), new { id = reserva.IdReserva }, new
+        {
+            reserva.IdReserva,
+            reserva.IdSala,
+            reserva.EstadoReserva,
+            reserva.FechaHoraInicio,
+            reserva.FechaHoraFin,
+            qrBase64,
+            qrDataUrl = $"data:image/png;base64,{qrBase64}"
+        });
     }
 
     [HttpPatch("{id}/cerrar")]
