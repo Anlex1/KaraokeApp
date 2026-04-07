@@ -18,7 +18,13 @@ public class AuthController : ControllerBase
         _tokenService = tokenService;
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="dto"></param>
+    /// <returns></returns>
     [HttpPost("login")]
+    [ProducesResponseType(StatusCodes.Status200OK)]    ]
     public async Task<IActionResult> Login([FromBody] LoginDto dto)
     {
         var usuario = await _repo.GetByUsernameAsync(dto.Username);

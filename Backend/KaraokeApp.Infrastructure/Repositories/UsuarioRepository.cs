@@ -7,8 +7,7 @@ namespace KaraokeApp.Infrastructure.Repositories;
 
 public class UsuarioRepository : GenericRepository<Usuario>, IUsuarioRepository
 {
-    public UsuarioRepository(KaraokeDbContext context) : base(context) { }
-
+    public UsuarioRepository(KaraokeDbContext context) : base(context) { }    
     public async Task<Usuario?> GetByUsernameAsync(string username)
     {
        return await _context.Usuarios.FirstOrDefaultAsync(u => u.Username == username);

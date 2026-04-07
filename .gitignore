@@ -3,6 +3,9 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
+# Credenciales locales
+**/appsettings.json
+
 # User-specific files
 *.rsuser
 *.suo
@@ -237,7 +240,7 @@ ClientBin/
 *.dbproj.schemaview
 *.jfm
 *.pfx
-*.publishsettings
+*.publishsettings77
 orleans.codegen.cs
 
 # Including strong name files can present a security risk
