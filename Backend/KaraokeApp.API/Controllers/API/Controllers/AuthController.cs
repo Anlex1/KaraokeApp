@@ -24,7 +24,7 @@ public class AuthController : ControllerBase
     /// <param name="dto"></param>
     /// <returns></returns>
     [HttpPost("login")]
-    [ProducesResponseType(StatusCodes.Status200OK)]    ]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> Login([FromBody] LoginDto dto)
     {
         var usuario = await _repo.GetByUsernameAsync(dto.Username);
