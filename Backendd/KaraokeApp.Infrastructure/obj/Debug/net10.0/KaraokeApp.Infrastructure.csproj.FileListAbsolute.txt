@@ -1,0 +1,53 @@
+C:\Users\Usuario\Desktop\KaraokeApp-main\KaraokeApp-main\Backend\KaraokeApp.Infrastructure\bin\Debug\net10.0\KaraokeApp.Infrastructure.deps.json
+C:\Users\Usuario\Desktop\KaraokeApp-main\KaraokeApp-main\Backend\KaraokeApp.Infrastructure\bin\Debug\net10.0\KaraokeApp.Infrastructure.runtimeconfig.json
+C:\Users\Usuario\Desktop\KaraokeApp-main\KaraokeApp-main\Backend\KaraokeApp.Infrastructure\bin\Debug\net10.0\KaraokeApp.Infrastructure.dll
+C:\Users\Usuario\Desktop\KaraokeApp-main\KaraokeApp-main\Backend\KaraokeApp.Infrastructure\bin\Debug\net10.0\KaraokeApp.Infrastructure.pdb
+C:\Users\Usuario\Desktop\KaraokeApp-main\KaraokeApp-main\Backend\KaraokeApp.Infrastructure\bin\Debug\net10.0\KaraokeApp.Core.dll
+C:\Users\Usuario\Desktop\KaraokeApp-main\KaraokeApp-main\Backend\KaraokeApp.Infrastructure\bin\Debug\net10.0\KaraokeApp.Core.pdb
+C:\Users\Usuario\Desktop\KaraokeApp-main\KaraokeApp-main\Backend\KaraokeApp.Infrastructure\obj\Debug\net10.0\KaraokeApp.Infrastructure.csproj.AssemblyReference.cache
+C:\Users\Usuario\Desktop\KaraokeApp-main\KaraokeApp-main\Backend\KaraokeApp.Infrastructure\obj\Debug\net10.0\KaraokeApp.Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Usuario\Desktop\KaraokeApp-main\KaraokeApp-main\Backend\KaraokeApp.Infrastructure\obj\Debug\net10.0\KaraokeApp.Infrastructure.AssemblyInfoInputs.cache
+C:\Users\Usuario\Desktop\KaraokeApp-main\KaraokeApp-main\Backend\KaraokeApp.Infrastructure\obj\Debug\net10.0\KaraokeApp.Infrastructure.AssemblyInfo.cs
+C:\Users\Usuario\Desktop\KaraokeApp-main\KaraokeApp-main\Backend\KaraokeApp.Infrastructure\obj\Debug\net10.0\KaraokeApp.Infrastructure.csproj.CoreCompileInputs.cache
+C:\Users\Usuario\Desktop\KaraokeApp-main\KaraokeApp-main\Backend\KaraokeApp.Infrastructure\obj\Debug\net10.0\KaraokeA.7FDCD35C.Up2Date
+C:\Users\Usuario\Desktop\KaraokeApp-main\KaraokeApp-main\Backend\KaraokeApp.Infrastructure\obj\Debug\net10.0\KaraokeApp.Infrastructure.dll
+C:\Users\Usuario\Desktop\KaraokeApp-main\KaraokeApp-main\Backend\KaraokeApp.Infrastructure\obj\Debug\net10.0\refint\KaraokeApp.Infrastructure.dll
+C:\Users\Usuario\Desktop\KaraokeApp-main\KaraokeApp-main\Backend\KaraokeApp.Infrastructure\obj\Debug\net10.0\KaraokeApp.Infrastructure.pdb
+C:\Users\Usuario\Desktop\KaraokeApp-main\KaraokeApp-main\Backend\KaraokeApp.Infrastructure\obj\Debug\net10.0\KaraokeApp.Infrastructure.genruntimeconfig.cache
+C:\Users\Usuario\Desktop\KaraokeApp-main\KaraokeApp-main\Backend\KaraokeApp.Infrastructure\obj\Debug\net10.0\ref\KaraokeApp.Infrastructure.dll
+C:\Users\Usuario\Desktop\Karaoke app\KaraokeApp\Backend\KaraokeApp.Infrastructure\bin\Debug\net10.0\KaraokeApp.Infrastructure.deps.json
+C:\Users\Usuario\Desktop\Karaoke app\KaraokeApp\Backend\KaraokeApp.Infrastructure\bin\Debug\net10.0\KaraokeApp.Infrastructure.runtimeconfig.json
+C:\Users\Usuario\Desktop\Karaoke app\KaraokeApp\Backend\KaraokeApp.Infrastructure\bin\Debug\net10.0\KaraokeApp.Infrastructure.dll
+C:\Users\Usuario\Desktop\Karaoke app\KaraokeApp\Backend\KaraokeApp.Infrastructure\bin\Debug\net10.0\KaraokeApp.Infrastructure.pdb
+C:\Users\Usuario\Desktop\Karaoke app\KaraokeApp\Backend\KaraokeApp.Infrastructure\bin\Debug\net10.0\KaraokeApp.Core.dll
+C:\Users\Usuario\Desktop\Karaoke app\KaraokeApp\Backend\KaraokeApp.Infrastructure\bin\Debug\net10.0\KaraokeApp.Core.pdb
+C:\Users\Usuario\Desktop\Karaoke app\KaraokeApp\Backend\KaraokeApp.Infrastructure\bin\Debug\net10.0\KaraokeApp.Core.xml
+C:\Users\Usuario\Desktop\Karaoke app\KaraokeApp\Backend\KaraokeApp.Infrastructure\obj\Debug\net10.0\KaraokeApp.Infrastructure.csproj.AssemblyReference.cache
+C:\Users\Usuario\Desktop\Karaoke app\KaraokeApp\Backend\KaraokeApp.Infrastructure\obj\Debug\net10.0\KaraokeApp.Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Usuario\Desktop\Karaoke app\KaraokeApp\Backend\KaraokeApp.Infrastructure\obj\Debug\net10.0\KaraokeApp.Infrastructure.AssemblyInfoInputs.cache
+C:\Users\Usuario\Desktop\Karaoke app\KaraokeApp\Backend\KaraokeApp.Infrastructure\obj\Debug\net10.0\KaraokeApp.Infrastructure.AssemblyInfo.cs
+C:\Users\Usuario\Desktop\Karaoke app\KaraokeApp\Backend\KaraokeApp.Infrastructure\obj\Debug\net10.0\KaraokeApp.Infrastructure.csproj.CoreCompileInputs.cache
+C:\Users\Usuario\Desktop\Karaoke app\KaraokeApp\Backend\KaraokeApp.Infrastructure\obj\Debug\net10.0\KaraokeA.7FDCD35C.Up2Date
+C:\Users\Usuario\Desktop\Karaoke app\KaraokeApp\Backend\KaraokeApp.Infrastructure\obj\Debug\net10.0\KaraokeApp.Infrastructure.dll
+C:\Users\Usuario\Desktop\Karaoke app\KaraokeApp\Backend\KaraokeApp.Infrastructure\obj\Debug\net10.0\refint\KaraokeApp.Infrastructure.dll
+C:\Users\Usuario\Desktop\Karaoke app\KaraokeApp\Backend\KaraokeApp.Infrastructure\obj\Debug\net10.0\KaraokeApp.Infrastructure.pdb
+C:\Users\Usuario\Desktop\Karaoke app\KaraokeApp\Backend\KaraokeApp.Infrastructure\obj\Debug\net10.0\KaraokeApp.Infrastructure.genruntimeconfig.cache
+C:\Users\Usuario\Desktop\Karaoke app\KaraokeApp\Backend\KaraokeApp.Infrastructure\obj\Debug\net10.0\ref\KaraokeApp.Infrastructure.dll
+C:\Users\Usuario\Desktop\Karaoke app\KaraokeApp\Backendd\KaraokeApp.Infrastructure\bin\Debug\net10.0\KaraokeApp.Infrastructure.deps.json
+C:\Users\Usuario\Desktop\Karaoke app\KaraokeApp\Backendd\KaraokeApp.Infrastructure\bin\Debug\net10.0\KaraokeApp.Infrastructure.runtimeconfig.json
+C:\Users\Usuario\Desktop\Karaoke app\KaraokeApp\Backendd\KaraokeApp.Infrastructure\bin\Debug\net10.0\KaraokeApp.Infrastructure.dll
+C:\Users\Usuario\Desktop\Karaoke app\KaraokeApp\Backendd\KaraokeApp.Infrastructure\bin\Debug\net10.0\KaraokeApp.Infrastructure.pdb
+C:\Users\Usuario\Desktop\Karaoke app\KaraokeApp\Backendd\KaraokeApp.Infrastructure\bin\Debug\net10.0\KaraokeApp.Core.dll
+C:\Users\Usuario\Desktop\Karaoke app\KaraokeApp\Backendd\KaraokeApp.Infrastructure\bin\Debug\net10.0\KaraokeApp.Core.pdb
+C:\Users\Usuario\Desktop\Karaoke app\KaraokeApp\Backendd\KaraokeApp.Infrastructure\bin\Debug\net10.0\KaraokeApp.Core.xml
+C:\Users\Usuario\Desktop\Karaoke app\KaraokeApp\Backendd\KaraokeApp.Infrastructure\obj\Debug\net10.0\KaraokeApp.Infrastructure.csproj.AssemblyReference.cache
+C:\Users\Usuario\Desktop\Karaoke app\KaraokeApp\Backendd\KaraokeApp.Infrastructure\obj\Debug\net10.0\KaraokeApp.Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Usuario\Desktop\Karaoke app\KaraokeApp\Backendd\KaraokeApp.Infrastructure\obj\Debug\net10.0\KaraokeApp.Infrastructure.AssemblyInfoInputs.cache
+C:\Users\Usuario\Desktop\Karaoke app\KaraokeApp\Backendd\KaraokeApp.Infrastructure\obj\Debug\net10.0\KaraokeApp.Infrastructure.AssemblyInfo.cs
+C:\Users\Usuario\Desktop\Karaoke app\KaraokeApp\Backendd\KaraokeApp.Infrastructure\obj\Debug\net10.0\KaraokeApp.Infrastructure.csproj.CoreCompileInputs.cache
+C:\Users\Usuario\Desktop\Karaoke app\KaraokeApp\Backendd\KaraokeApp.Infrastructure\obj\Debug\net10.0\KaraokeA.7FDCD35C.Up2Date
+C:\Users\Usuario\Desktop\Karaoke app\KaraokeApp\Backendd\KaraokeApp.Infrastructure\obj\Debug\net10.0\KaraokeApp.Infrastructure.dll
+C:\Users\Usuario\Desktop\Karaoke app\KaraokeApp\Backendd\KaraokeApp.Infrastructure\obj\Debug\net10.0\refint\KaraokeApp.Infrastructure.dll
+C:\Users\Usuario\Desktop\Karaoke app\KaraokeApp\Backendd\KaraokeApp.Infrastructure\obj\Debug\net10.0\KaraokeApp.Infrastructure.pdb
+C:\Users\Usuario\Desktop\Karaoke app\KaraokeApp\Backendd\KaraokeApp.Infrastructure\obj\Debug\net10.0\KaraokeApp.Infrastructure.genruntimeconfig.cache
+C:\Users\Usuario\Desktop\Karaoke app\KaraokeApp\Backendd\KaraokeApp.Infrastructure\obj\Debug\net10.0\ref\KaraokeApp.Infrastructure.dll

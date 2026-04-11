@@ -1,0 +1,507 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>KaraokeApp.Core</name>
+    </assembly>
+    <members>
+        <member name="T:KaraokeApp.Core.DTOs.Pedido.ActualizarEstadoPedidoDto">
+            <summary>
+            DTO utilizado para modificar el progreso de un pedido en el sistema.
+            </summary>
+        </member>
+        <member name="P:KaraokeApp.Core.DTOs.Pedido.ActualizarEstadoPedidoDto.EstadoPedido">
+            <summary>
+            Nuevo estado que se asignará al pedido.
+            </summary>
+            <example>En preparación</example>
+            <remarks>
+            Los valores permitidos son: 'Pendiente', 'En preparación', 'Entregado'.
+            </remarks>
+        </member>
+        <member name="T:KaraokeApp.Core.DTOs.Pedido.CrearPedidoDto">
+            <summary>
+            Estructura de datos requerida para registrar un nuevo pedido dentro de una reserva.
+            </summary>
+        </member>
+        <member name="P:KaraokeApp.Core.DTOs.Pedido.CrearPedidoDto.IdReserva">
+            <summary>
+            Identificador único de la reserva activa a la cual se cargará el consumo.
+            </summary>
+            <example>10</example>
+        </member>
+        <member name="P:KaraokeApp.Core.DTOs.Pedido.CrearPedidoDto.Detalles">
+            <summary>
+            Listado de productos y sus respectivas cantidades solicitadas por el cliente.
+            </summary>
+        </member>
+        <member name="T:KaraokeApp.Core.DTOs.Pedido.CrearDetallePedidoDto">
+            <summary>
+            Representa el detalle individual de un producto dentro de la solicitud de pedido.
+            </summary>
+        </member>
+        <member name="P:KaraokeApp.Core.DTOs.Pedido.CrearDetallePedidoDto.IdProducto">
+            <summary>
+            ID del producto que se desea pedir.
+            </summary>
+            <example>5</example>
+        </member>
+        <member name="P:KaraokeApp.Core.DTOs.Pedido.CrearDetallePedidoDto.Cantidad">
+            <summary>
+            Cantidad de unidades del producto. Debe ser mayor a cero y estar disponible en stock.
+            </summary>
+            <example>2</example>
+        </member>
+        <member name="T:KaraokeApp.Core.DTOs.Pedido.PedidoResponseDto">
+            <summary>
+            Estructura de respuesta que contiene la información detallada de un pedido realizado.
+            </summary>
+        </member>
+        <member name="P:KaraokeApp.Core.DTOs.Pedido.PedidoResponseDto.IdPedido">
+            <summary>Identificador único del pedido en el sistema.</summary>
+            <example>101</example>
+        </member>
+        <member name="P:KaraokeApp.Core.DTOs.Pedido.PedidoResponseDto.IdReserva">
+            <summary>ID de la reserva a la que pertenece este pedido.</summary>
+            <example>10</example>
+        </member>
+        <member name="P:KaraokeApp.Core.DTOs.Pedido.PedidoResponseDto.EstadoPedido">
+            <summary>Estado actual del pedido (Pendiente, En preparación, Entregado).</summary>
+            <example>Entregado</example>
+        </member>
+        <member name="P:KaraokeApp.Core.DTOs.Pedido.PedidoResponseDto.FechaHora">
+            <summary>Fecha y hora exacta en la que se registró el pedido.</summary>
+        </member>
+        <member name="P:KaraokeApp.Core.DTOs.Pedido.PedidoResponseDto.Total">
+            <summary>Monto total acumulado del pedido (suma de todos los subtotales).</summary>
+            <example>45.50</example>
+        </member>
+        <member name="P:KaraokeApp.Core.DTOs.Pedido.PedidoResponseDto.Detalles">
+            <summary>Lista detallada de los productos incluidos en el pedido.</summary>
+        </member>
+        <member name="T:KaraokeApp.Core.DTOs.Pedido.DetallePedidoResponseDto">
+            <summary>
+            Información detallada de un producto específico dentro de la respuesta de un pedido.
+            </summary>
+        </member>
+        <member name="P:KaraokeApp.Core.DTOs.Pedido.DetallePedidoResponseDto.IdDetallePedido">
+            <summary>Identificador del detalle de línea del pedido.</summary>
+        </member>
+        <member name="P:KaraokeApp.Core.DTOs.Pedido.DetallePedidoResponseDto.NombreProducto">
+            <summary>Nombre descriptivo del producto solicitado.</summary>
+            <example>Cerveza Artesanal</example>
+        </member>
+        <member name="P:KaraokeApp.Core.DTOs.Pedido.DetallePedidoResponseDto.Cantidad">
+            <summary>Cantidad de unidades entregadas.</summary>
+            <example>3</example>
+        </member>
+        <member name="P:KaraokeApp.Core.DTOs.Pedido.DetallePedidoResponseDto.Subtotal">
+            <summary>Cálculo de (Precio Unitario * Cantidad) para este producto.</summary>
+            <example>15.00</example>
+        </member>
+        <member name="T:KaraokeApp.Core.DTOs.Producto.ActualizarProductoDto">
+            <summary>
+            Objeto de transferencia para la actualización parcial o total de un producto existente.
+            </summary>
+            <remarks>
+            Todos los campos son opcionales. Si un campo se envía como nulo, su valor actual en la base de datos no será modificado.
+            </remarks>
+        </member>
+        <member name="P:KaraokeApp.Core.DTOs.Producto.ActualizarProductoDto.Nombre">
+            <summary>
+            Nuevo nombre para el producto.
+            </summary>
+            <example>Cerveza Importada 330ml</example>
+        </member>
+        <member name="P:KaraokeApp.Core.DTOs.Producto.ActualizarProductoDto.Precio">
+            <summary>
+            Precio de venta actualizado.
+            </summary>
+            <example>12.50</example>
+        </member>
+        <member name="P:KaraokeApp.Core.DTOs.Producto.ActualizarProductoDto.Stock">
+            <summary>
+            Cantidad disponible en inventario.
+            </summary>
+            <example>50</example>
+        </member>
+        <member name="P:KaraokeApp.Core.DTOs.Producto.ActualizarProductoDto.EstadoActivo">
+            <summary>
+            Define si el producto está disponible para la venta (true) o fuera de catálogo (false).
+            </summary>
+            <example>true</example>
+        </member>
+        <member name="T:KaraokeApp.Core.DTOs.Producto.CrearProductoDto">
+            <summary>
+            Estructura de datos requerida para el registro de un nuevo producto en el catálogo.
+            </summary>
+        </member>
+        <member name="P:KaraokeApp.Core.DTOs.Producto.CrearProductoDto.Nombre">
+            <summary>
+            Nombre descriptivo del producto.
+            </summary>
+            <example>Nachos con Queso Grande</example>
+        </member>
+        <member name="P:KaraokeApp.Core.DTOs.Producto.CrearProductoDto.Precio">
+            <summary>
+            Precio de venta al público.
+            </summary>
+            <example>15.00</example>
+        </member>
+        <member name="P:KaraokeApp.Core.DTOs.Producto.CrearProductoDto.Stock">
+            <summary>
+            Cantidad inicial de unidades disponibles en el inventario.
+            </summary>
+            <example>100</example>
+        </member>
+        <member name="T:KaraokeApp.Core.DTOs.Producto.ProductoResponseDto">
+            <summary>
+            Objeto de transferencia que representa la información detallada de un producto en las respuestas de la API.
+            </summary>
+        </member>
+        <member name="P:KaraokeApp.Core.DTOs.Producto.ProductoResponseDto.IdProducto">
+            <summary>
+            Identificador único del producto en la base de datos.
+            </summary>
+            <example>1</example>
+        </member>
+        <member name="P:KaraokeApp.Core.DTOs.Producto.ProductoResponseDto.Nombre">
+            <summary>
+            Nombre del producto tal como se mostrará al cliente.
+            </summary>
+            <example>Refresco de Cola 500ml</example>
+        </member>
+        <member name="P:KaraokeApp.Core.DTOs.Producto.ProductoResponseDto.Precio">
+            <summary>
+            Precio unitario de venta.
+            </summary>
+            <example>2.50</example>
+        </member>
+        <member name="P:KaraokeApp.Core.DTOs.Producto.ProductoResponseDto.EstadoActivo">
+            <summary>
+            Indica si el producto está disponible para la venta inmediata.
+            </summary>
+            <example>true</example>
+        </member>
+        <member name="P:KaraokeApp.Core.DTOs.Producto.ProductoResponseDto.Stock">
+            <summary>
+            Cantidad actual disponible en el almacén.
+            </summary>
+            <example>24</example>
+        </member>
+        <member name="T:KaraokeApp.Core.DTOs.Reserva.CerrarReservaDto">
+            <summary>
+            Objeto de transferencia de datos para la finalización y cierre de una reserva.
+            </summary>
+        </member>
+        <member name="P:KaraokeApp.Core.DTOs.Reserva.CerrarReservaDto.HoraSalida">
+            <summary>
+            Fecha y hora exacta en la que el cliente desocupa la sala.
+            </summary>
+            <remarks>
+            Este valor se utiliza para calcular el tiempo total de uso y generar el cobro final basado en la tarifa de la sala.
+            </remarks>
+            <example>2026-02-08 23:30</example>
+        </member>
+        <member name="T:KaraokeApp.Core.DTOs.Reserva.CrearReservaDto">
+            <summary>
+            Estructura de datos necesaria para registrar la apertura de una nueva reserva de sala.
+            </summary>
+        </member>
+        <member name="P:KaraokeApp.Core.DTOs.Reserva.CrearReservaDto.IdSala">
+            <summary>
+            Identificador de la sala que se desea reservar.
+            </summary>
+            <example>1</example>
+        </member>
+        <member name="P:KaraokeApp.Core.DTOs.Reserva.CrearReservaDto.IdUsuario">
+            <summary>
+            Identificador del usuario (cliente o responsable) que realiza la reserva.
+            </summary>
+            <example>5</example>
+        </member>
+        <member name="P:KaraokeApp.Core.DTOs.Reserva.CrearReservaDto.FechaHoraInicio">
+            <summary>
+            Fecha y hora programada para el inicio de la sesión de Karaoke.
+            </summary>
+            <example>2026-03-08 20:00</example>
+        </member>
+        <member name="P:KaraokeApp.Core.DTOs.Reserva.CrearReservaDto.FechaHoraFin">
+            <summary>
+            Fecha y hora estimada en la que finalizará la sesión.
+            </summary>
+            <example>2026-04-08T22:00:00Z</example>
+        </member>
+        <member name="P:KaraokeApp.Core.DTOs.Reserva.CrearReservaDto.CantidadPersonas">
+            <summary>
+            Número de personas que asistirán. Ayuda a validar si la capacidad de la sala es adecuada.
+            </summary>
+            <example>4</example>
+        </member>
+        <member name="T:KaraokeApp.Core.DTOs.Reserva.ReservaResponseDto">
+            <summary>
+            Estructura de respuesta detallada que representa una reserva completada con información descriptiva.
+            </summary>
+        </member>
+        <member name="P:KaraokeApp.Core.DTOs.Reserva.ReservaResponseDto.IdReserva">
+            <summary>Identificador único de la reserva.</summary>
+            <example>15</example>
+        </member>
+        <member name="P:KaraokeApp.Core.DTOs.Reserva.ReservaResponseDto.NumeroSala">
+            <summary>Nombre o número identificador de la sala reservada.</summary>
+            <example>Sala VIP 01</example>
+        </member>
+        <member name="P:KaraokeApp.Core.DTOs.Reserva.ReservaResponseDto.NombreUsuario">
+            <summary>Nombre completo del usuario que realizó la reserva.</summary>
+            <example>Juan Pérez</example>
+        </member>
+        <member name="P:KaraokeApp.Core.DTOs.Reserva.ReservaResponseDto.FechaHoraInicio">
+            <summary>Fecha y hora programada de inicio.</summary>
+        </member>
+        <member name="P:KaraokeApp.Core.DTOs.Reserva.ReservaResponseDto.FechaHoraFin">
+            <summary>Fecha y hora programada de finalización.</summary>
+        </member>
+        <member name="P:KaraokeApp.Core.DTOs.Reserva.ReservaResponseDto.EstadoReserva">
+            <summary>Estado de la reserva (Activa, Cerrada, Cancelada).</summary>
+            <example>Activa</example>
+        </member>
+        <member name="P:KaraokeApp.Core.DTOs.Reserva.ReservaResponseDto.CantidadPersonas">
+            <summary>Cantidad de asistentes registrados para la sesión.</summary>
+            <example>6</example>
+        </member>
+        <member name="P:KaraokeApp.Core.DTOs.Reserva.ReservaResponseDto.ValorTotal">
+            <summary>Monto total calculado por el tiempo de uso de la sala.</summary>
+            <example>120.50</example>
+        </member>
+        <member name="P:KaraokeApp.Core.DTOs.Reserva.ReservaResponseDto.HoraLlegada">
+            <summary>Fecha y hora real en la que el cliente inició la sesión.</summary>
+        </member>
+        <member name="P:KaraokeApp.Core.DTOs.Reserva.ReservaResponseDto.HoraSalida">
+            <summary>Fecha y hora real en la que el cliente finalizó la sesión.</summary>
+        </member>
+        <member name="T:KaraokeApp.Core.DTOs.Sala.ActualizarSalaDto">
+            <summary>
+            Objeto de transferencia para la actualización parcial de los parámetros de una sala.
+            </summary>
+            <remarks>
+            Los campos son opcionales. Si se envían como nulos, se mantendrá el valor actual registrado en la base de datos.
+            </remarks>
+        </member>
+        <member name="P:KaraokeApp.Core.DTOs.Sala.ActualizarSalaDto.PrecioHora">
+            <summary>
+            Tarifa actualizada por cada hora de uso de la sala.
+            </summary>
+            <example>25.50</example>
+        </member>
+        <member name="P:KaraokeApp.Core.DTOs.Sala.ActualizarSalaDto.Capacidad">
+            <summary>
+            Capacidad máxima de personas permitidas en la sala.
+            </summary>
+            <example>10</example>
+        </member>
+        <member name="P:KaraokeApp.Core.DTOs.Sala.ActualizarSalaDto.Estado">
+            <summary>
+            Estado operativo de la sala (Disponible, Ocupada, Inactiva).
+            </summary>
+            <example>Disponible</example>
+        </member>
+        <member name="T:KaraokeApp.Core.DTOs.Sala.CrearSalaDto">
+            <summary>
+            Datos requeridos para el registro y creación de una nueva sala en el sistema.
+            </summary>
+        </member>
+        <member name="P:KaraokeApp.Core.DTOs.Sala.CrearSalaDto.NumeroSala">
+            <summary>
+            Nombre o número identificador de la sala (ej: "Sala 01", "VIP Platinum").
+            </summary>
+            <example>Sala 05</example>
+        </member>
+        <member name="P:KaraokeApp.Core.DTOs.Sala.CrearSalaDto.PrecioHora">
+            <summary>
+            Tarifa establecida por hora para el uso de esta sala.
+            </summary>
+            <example>30.00</example>
+        </member>
+        <member name="P:KaraokeApp.Core.DTOs.Sala.CrearSalaDto.Capacidad">
+            <summary>
+            Cantidad máxima de personas que pueden ocupar la sala cómodamente.
+            </summary>
+            <example>8</example>
+        </member>
+        <member name="T:KaraokeApp.Core.DTOs.Sala.SalaResponseDto">
+            <summary>
+            Objeto de respuesta que contiene la información detallada de una sala de karaoke.
+            </summary>
+        </member>
+        <member name="P:KaraokeApp.Core.DTOs.Sala.SalaResponseDto.IdSala">
+            <summary>
+            Identificador único de la sala en el sistema.
+            </summary>
+            <example>1</example>
+        </member>
+        <member name="P:KaraokeApp.Core.DTOs.Sala.SalaResponseDto.NumeroSala">
+            <summary>
+            Nombre o número identificador visible de la sala.
+            </summary>
+            <example>Sala VIP 01</example>
+        </member>
+        <member name="P:KaraokeApp.Core.DTOs.Sala.SalaResponseDto.Estado">
+            <summary>
+            Estado actual de la sala.
+            </summary>
+            <remarks>
+            Valores comunes: "Disponible", "Ocupada", "Inactiva", "Mantenimiento".
+            </remarks>
+            <example>Disponible</example>
+        </member>
+        <member name="P:KaraokeApp.Core.DTOs.Sala.SalaResponseDto.PrecioHora">
+            <summary>
+            Costo configurado por cada hora de uso.
+            </summary>
+            <example>45.00</example>
+        </member>
+        <member name="P:KaraokeApp.Core.DTOs.Sala.SalaResponseDto.Capacidad">
+            <summary>
+            Número máximo de personas permitidas en este espacio.
+            </summary>
+            <example>12</example>
+        </member>
+        <member name="T:KaraokeApp.Core.DTOs.Usuario.ActualizarUsuarioDto">
+            <summary>
+            Objeto de transferencia para la actualización de información de perfil y estado de un usuario.
+            </summary>
+            <remarks>
+            Los campos son opcionales. Enviar un valor nulo preservará el dato actual en la base de datos.
+            </remarks>
+        </member>
+        <member name="P:KaraokeApp.Core.DTOs.Usuario.ActualizarUsuarioDto.Nombre">
+            <summary>
+            Nombre completo o alias actualizado del usuario.
+            </summary>
+            <example>Carlos Mario Restrepo</example>
+        </member>
+        <member name="P:KaraokeApp.Core.DTOs.Usuario.ActualizarUsuarioDto.Correo">
+            <summary>
+            Dirección de correo electrónico actualizada. Debe tener un formato válido.
+            </summary>
+            <example>carlos.m@ejemplo.com</example>
+        </member>
+        <member name="P:KaraokeApp.Core.DTOs.Usuario.ActualizarUsuarioDto.Estado">
+            <summary>
+            Estado administrativo del usuario dentro del sistema.
+            </summary>
+            <remarks>
+            Valores sugeridos: "Activo", "Inactivo", "Baneado".
+            </remarks>
+            <example>Activo</example>
+        </member>
+        <member name="T:KaraokeApp.Core.DTOs.Usuario.CrearUsuarioDto">
+            <summary>
+            Estructura de datos requerida para el registro inicial de un nuevo usuario en el sistema.
+            </summary>
+        </member>
+        <member name="P:KaraokeApp.Core.DTOs.Usuario.CrearUsuarioDto.Nombre">
+            <summary>
+            Nombre completo de la persona.
+            </summary>
+            <example>Alejandro Martínez</example>
+        </member>
+        <member name="P:KaraokeApp.Core.DTOs.Usuario.CrearUsuarioDto.Rol">
+            <summary>
+            Perfil de acceso asignado al usuario.
+            </summary>
+            <remarks>Valores permitidos: "Admin", "Empleado", "Cliente".</remarks>
+            <example>Empleado</example>
+        </member>
+        <member name="P:KaraokeApp.Core.DTOs.Usuario.CrearUsuarioDto.Username">
+            <summary>
+            Nombre de usuario único para el inicio de sesión.
+            </summary>
+            <example>amartinez_karaoke</example>
+        </member>
+        <member name="P:KaraokeApp.Core.DTOs.Usuario.CrearUsuarioDto.Contraseña">
+            <summary>
+            Clave de acceso secreta. 
+            </summary>
+            <remarks>Esta contraseña será encriptada mediante BCrypt antes de almacenarse en la base de datos.</remarks>
+            <example>ClaveSegura123!</example>
+        </member>
+        <member name="P:KaraokeApp.Core.DTOs.Usuario.CrearUsuarioDto.Correo">
+            <summary>
+            Dirección de correo electrónico de contacto.
+            </summary>
+            <example>alejandro.m@empresa.com</example>
+        </member>
+        <member name="T:KaraokeApp.Core.DTOs.Usuario.LoginDto">
+            <summary>
+            Objeto de transferencia para el inicio de sesión. 
+            Contiene las credenciales necesarias para autenticar a un usuario y generar un token de acceso.
+            </summary>
+        </member>
+        <member name="P:KaraokeApp.Core.DTOs.Usuario.LoginDto.Username">
+            <summary>
+            Nombre de usuario único registrado en el sistema.
+            </summary>
+            <example>admin_karaoke</example>
+        </member>
+        <member name="P:KaraokeApp.Core.DTOs.Usuario.LoginDto.Contraseña">
+            <summary>
+            Contraseña asociada a la cuenta del usuario.
+            </summary>
+            <example>Password123!</example>
+        </member>
+        <member name="T:KaraokeApp.Core.DTOs.Usuario.LoginResponseDto">
+            <summary>
+            Estructura de respuesta tras un inicio de sesión exitoso.
+            Contiene la credencial de acceso y datos básicos del perfil.
+            </summary>
+        </member>
+        <member name="P:KaraokeApp.Core.DTOs.Usuario.LoginResponseDto.Token">
+            <summary>
+            Token de autenticación JWT (JSON Web Token). 
+            Debe incluirse en la cabecera 'Authorization' como 'Bearer [token]' en peticiones protegidas.
+            </summary>
+            <example>eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...</example>
+        </member>
+        <member name="P:KaraokeApp.Core.DTOs.Usuario.LoginResponseDto.Nombre">
+            <summary>
+            Nombre completo del usuario autenticado para mostrar en la interfaz.
+            </summary>
+            <example>Administrador Principal</example>
+        </member>
+        <member name="P:KaraokeApp.Core.DTOs.Usuario.LoginResponseDto.Rol">
+            <summary>
+            Rol asignado al usuario que determina sus niveles de acceso en la aplicación.
+            </summary>
+            <example>Admin</example>
+        </member>
+        <member name="T:KaraokeApp.Core.DTOs.Usuario.UsuarioResponseDto">
+            <summary>
+            Estructura de respuesta que representa la información pública y administrativa de un usuario.
+            </summary>
+        </member>
+        <member name="P:KaraokeApp.Core.DTOs.Usuario.UsuarioResponseDto.IdUsuario">
+            <summary>Identificador único del usuario.</summary>
+            <example>1</example>
+        </member>
+        <member name="P:KaraokeApp.Core.DTOs.Usuario.UsuarioResponseDto.Nombre">
+            <summary>Nombre completo registrado.</summary>
+            <example>Andrea Castrillón</example>
+        </member>
+        <member name="P:KaraokeApp.Core.DTOs.Usuario.UsuarioResponseDto.Rol">
+            <summary>Nivel de acceso (Admin, Empleado, Cliente).</summary>
+            <example>Cliente</example>
+        </member>
+        <member name="P:KaraokeApp.Core.DTOs.Usuario.UsuarioResponseDto.Username">
+            <summary>Nombre de cuenta utilizado para el acceso al sistema.</summary>
+            <example>acastrillon_karaoke</example>
+        </member>
+        <member name="P:KaraokeApp.Core.DTOs.Usuario.UsuarioResponseDto.Correo">
+            <summary>Correo electrónico de contacto.</summary>
+            <example>andrea@ejemplo.com</example>
+        </member>
+        <member name="P:KaraokeApp.Core.DTOs.Usuario.UsuarioResponseDto.Estado">
+            <summary>Estado de la cuenta (Activo, Inactivo, Baneado).</summary>
+            <example>Activo</example>
+        </member>
+    </members>
+</doc>

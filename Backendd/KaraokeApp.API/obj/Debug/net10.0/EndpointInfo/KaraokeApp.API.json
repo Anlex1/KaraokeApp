@@ -1,0 +1,2568 @@
+{
+  "openapi": "3.0.4",
+  "info": {
+    "title": "KaraokeApp.API",
+    "version": "1.0"
+  },
+  "paths": {
+    "/api/Auth/login": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Inicia sesión en el sistema y genera un token de acceso.",
+        "description": "Permite a los usuarios registrados obtener un token JWT válido para consumir servicios protegidos.\r\nEl usuario debe estar en estado \"Activo\".",
+        "requestBody": {
+          "description": "Objeto con las credenciales de acceso (Username y Contraseña).",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Retorna el token exitosamente.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoginResponseDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoginResponseDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoginResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Si las credenciales son incorrectas o el usuario no está activo.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Pedido": {
+      "get": {
+        "tags": [
+          "Pedido"
+        ],
+        "summary": "Obtiene el listado completo de pedidos realizados.",
+        "responses": {
+          "200": {
+            "description": "Retorna la lista de pedidos.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Pedido"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Pedido"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Pedido"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "No autorizado. Requiere token válido.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Prohibido. Solo Admin o Empleado pueden acceder.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Pedido"
+        ],
+        "summary": "Crea un nuevo pedido, valida el stock y descuenta las existencias de los productos.",
+        "requestBody": {
+          "description": "Información del pedido y lista de productos.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CrearPedidoDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CrearPedidoDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CrearPedidoDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Pedido creado exitosamente.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Pedido"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Pedido"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Pedido"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Si el producto no está activo o no hay stock suficiente.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Si alguno de los productos en el detalle no existe.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Pedido/pendientes": {
+      "get": {
+        "tags": [
+          "Pedido"
+        ],
+        "summary": "Obtiene los pedidos que aún no han sido entregados o están pendientes.",
+        "responses": {
+          "200": {
+            "description": "Retorna los pedidos pendientes.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Pedido"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Pedido"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Pedido"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Pedido/reserva/{idReserva}": {
+      "get": {
+        "tags": [
+          "Pedido"
+        ],
+        "summary": "Obtiene todos los pedidos asociados a una reserva específica.",
+        "parameters": [
+          {
+            "name": "idReserva",
+            "in": "path",
+            "description": "Identificador único de la reserva.",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retorna los pedidos de la reserva.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Pedido"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Pedido"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Pedido"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Pedido/{id}": {
+      "get": {
+        "tags": [
+          "Pedido"
+        ],
+        "summary": "Obtiene el detalle de un pedido específico por su ID.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID del pedido.",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retorna el pedido encontrado.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Pedido"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Pedido"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Pedido"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Si el pedido no existe.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Pedido/{id}/estado": {
+      "patch": {
+        "tags": [
+          "Pedido"
+        ],
+        "summary": "Actualiza el estado de un pedido (ej. de Pendiente a Entregado).",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID del pedido a modificar.",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Nuevo estado del pedido.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ActualizarEstadoPedidoDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ActualizarEstadoPedidoDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ActualizarEstadoPedidoDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Estado actualizado correctamente."
+          },
+          "400": {
+            "description": "Si el estado enviado no es válido.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Si el pedido no existe.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Producto/activos": {
+      "get": {
+        "tags": [
+          "Producto"
+        ],
+        "summary": "Obtiene la lista de productos que están marcados como activos para la venta.",
+        "description": "Este endpoint es de acceso público.",
+        "responses": {
+          "200": {
+            "description": "Retorna la lista de productos disponibles.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Producto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Producto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Producto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Producto": {
+      "get": {
+        "tags": [
+          "Producto"
+        ],
+        "summary": "Obtiene el catálogo completo de productos (activos e inactivos).",
+        "responses": {
+          "200": {
+            "description": "Retorna todos los productos.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Producto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Producto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Producto"
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Acceso denegado. Se requiere rol de Admin.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Producto"
+        ],
+        "summary": "Registra un nuevo producto en el catálogo.",
+        "requestBody": {
+          "description": "Datos del nuevo producto.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CrearProductoDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CrearProductoDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CrearProductoDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Producto creado exitosamente.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Producto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Producto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Producto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Si los datos enviados son inválidos.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Producto/{id}": {
+      "get": {
+        "tags": [
+          "Producto"
+        ],
+        "summary": "Obtiene la información detallada de un producto por su ID.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Identificador único del producto.",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retorna el producto solicitado.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Producto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Producto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Producto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Si el producto no existe.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Producto"
+        ],
+        "summary": "Actualiza la información de un producto existente de forma total o parcial.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID del producto a actualizar.",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Nuevos datos del producto.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ActualizarProductoDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ActualizarProductoDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ActualizarProductoDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Actualización exitosa (sin contenido)."
+          },
+          "404": {
+            "description": "Si el producto a actualizar no existe.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Producto/{id}/desactivar": {
+      "patch": {
+        "tags": [
+          "Producto"
+        ],
+        "summary": "Desactiva lógicamente un producto del catálogo para que no esté disponible al público.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID del producto a desactivar.",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Desactivación exitosa."
+          },
+          "404": {
+            "description": "Si el producto no existe.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Reserva": {
+      "get": {
+        "tags": [
+          "Reserva"
+        ],
+        "summary": "Obtiene el historial completo de todas las reservas registradas.",
+        "responses": {
+          "200": {
+            "description": "Retorna la lista de reservas.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Reserva"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Reserva"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Reserva"
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Acceso denegado. Se requiere rol de Admin o Empleado."
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Reserva"
+        ],
+        "summary": "Registra una nueva reserva, ocupa la sala y genera un código QR de acceso.",
+        "requestBody": {
+          "description": "Datos para la apertura de la reserva.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CrearReservaDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CrearReservaDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CrearReservaDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Reserva creada exitosamente. Incluye el QR en formato Base64."
+          },
+          "400": {
+            "description": "Si la sala ya está ocupada o los datos son inválidos.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Si la sala especificada no existe.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Reserva/activas": {
+      "get": {
+        "tags": [
+          "Reserva"
+        ],
+        "summary": "Obtiene únicamente las reservas que se encuentran en estado 'Activa'.",
+        "responses": {
+          "200": {
+            "description": "Retorna las reservas activas en curso.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Reserva"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Reserva"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Reserva"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Reserva/{id}": {
+      "get": {
+        "tags": [
+          "Reserva"
+        ],
+        "summary": "Obtiene los detalles de una reserva específica por su ID.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID de la reserva.",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retorna la reserva encontrada.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Reserva"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Reserva"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Reserva"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Si la reserva no existe.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Reserva/sala/{idSala}/activa": {
+      "get": {
+        "tags": [
+          "Reserva"
+        ],
+        "summary": "Busca la reserva activa asociada a una sala específica.",
+        "description": "Este endpoint es útil para que los clientes identifiquen su sesión actual mediante el escaneo de la sala.",
+        "parameters": [
+          {
+            "name": "idSala",
+            "in": "path",
+            "description": "ID de la sala a consultar.",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retorna la reserva activa de la sala.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Reserva"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Reserva"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Reserva"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Si no hay una reserva activa para esa sala.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Reserva/{id}/cerrar": {
+      "patch": {
+        "tags": [
+          "Reserva"
+        ],
+        "summary": "Finaliza una reserva activa, calcula el valor total a pagar y libera la sala.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID de la reserva a cerrar.",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Datos de finalización (hora de salida).",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CerrarReservaDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CerrarReservaDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CerrarReservaDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Reserva cerrada con el cálculo del total realizado."
+          },
+          "400": {
+            "description": "Si la reserva ya estaba cerrada o hay inconsistencia en los datos.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Si la reserva o la sala asociada no existen.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Sala/disponibles": {
+      "get": {
+        "tags": [
+          "Sala"
+        ],
+        "summary": "Obtiene todas las salas que tienen estado 'Disponible'.",
+        "description": "Accesible para todos los usuarios (clientes y personal).",
+        "responses": {
+          "200": {
+            "description": "Retorna el listado de salas libres.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Sala"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Sala"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Sala"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Sala": {
+      "get": {
+        "tags": [
+          "Sala"
+        ],
+        "summary": "Obtiene el listado completo de todas las salas registradas.",
+        "responses": {
+          "200": {
+            "description": "Retorna todas las salas.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Sala"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Sala"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Sala"
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Acceso denegado. Requiere rol de Admin o Empleado."
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Sala"
+        ],
+        "summary": "Registra una nueva sala en el sistema.",
+        "requestBody": {
+          "description": "Datos de configuración de la nueva sala.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CrearSalaDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CrearSalaDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CrearSalaDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Sala creada con éxito.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sala"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sala"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sala"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Acceso denegado. Solo administradores pueden crear salas."
+          }
+        }
+      }
+    },
+    "/api/Sala/{id}": {
+      "get": {
+        "tags": [
+          "Sala"
+        ],
+        "summary": "Obtiene la información detallada de una sala específica por su ID.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID único de la sala.",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retorna la sala encontrada.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sala"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sala"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sala"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Si la sala no existe.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Sala"
+        ],
+        "summary": "Actualiza los parámetros de una sala (precio, capacidad o estado).",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID de la sala a modificar.",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Nuevos valores para la sala.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ActualizarSalaDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ActualizarSalaDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ActualizarSalaDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Actualización realizada correctamente."
+          },
+          "404": {
+            "description": "Si la sala no existe.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Sala/{id}/desactivar": {
+      "patch": {
+        "tags": [
+          "Sala"
+        ],
+        "summary": "Cambia el estado de una sala a 'Inactiva', impidiendo su uso para nuevas reservas.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID de la sala a desactivar.",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Sala desactivada exitosamente."
+          },
+          "404": {
+            "description": "Si la sala no existe.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Sala/{id}/qr": {
+      "get": {
+        "tags": [
+          "Sala"
+        ],
+        "summary": "Genera y retorna un código QR en formato Base64 para una sala específica.",
+        "description": "Permite a las aplicaciones móviles obtener el código para ser impreso o mostrado digitalmente.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID de la sala.",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retorna el código QR generado."
+          },
+          "400": {
+            "description": "Si la sala está inactiva y no puede generar QR.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Si la sala no existe.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Usuario": {
+      "get": {
+        "tags": [
+          "Usuario"
+        ],
+        "summary": "Obtiene el listado completo de todos los usuarios registrados en el sistema.",
+        "responses": {
+          "200": {
+            "description": "Retorna la lista de usuarios exitosamente.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Usuario"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Usuario"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Usuario"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "No autorizado. Requiere un token válido.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Prohibido. Solo el Administrador puede ver esta lista.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Usuario"
+        ],
+        "summary": "Registra un nuevo usuario en el sistema con contraseña encriptada.",
+        "description": "La contraseña se procesa mediante BCrypt antes de ser almacenada. \r\nEl estado inicial por defecto es 'Activo'.",
+        "requestBody": {
+          "description": "Datos de registro del usuario.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CrearUsuarioDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CrearUsuarioDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CrearUsuarioDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Usuario creado exitosamente.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/UsuarioResponseDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UsuarioResponseDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UsuarioResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Si los datos de registro son inválidos o el username ya existe.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Usuario/{id}": {
+      "get": {
+        "tags": [
+          "Usuario"
+        ],
+        "summary": "Obtiene la información detallada de un usuario por su identificador único.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID del usuario.",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retorna el usuario solicitado.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Usuario"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Usuario"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Usuario"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Si el usuario no existe en la base de datos.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Usuario"
+        ],
+        "summary": "Actualiza la información de perfil o el estado de un usuario existente.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID del usuario a actualizar.",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Nuevos datos del usuario.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ActualizarUsuarioDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ActualizarUsuarioDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ActualizarUsuarioDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Actualización realizada correctamente."
+          },
+          "404": {
+            "description": "Si el usuario no existe.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Usuario/rol/{rol}": {
+      "get": {
+        "tags": [
+          "Usuario"
+        ],
+        "summary": "Filtra y obtiene usuarios según su rol asignado (Admin, Empleado, Cliente).",
+        "parameters": [
+          {
+            "name": "rol",
+            "in": "path",
+            "description": "Nombre del rol a filtrar.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retorna la lista de usuarios con el rol especificado.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Usuario"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Usuario"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Usuario"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Usuario/{id}/banear": {
+      "patch": {
+        "tags": [
+          "Usuario"
+        ],
+        "summary": "Cambia el estado del usuario a 'Baneado', impidiendo su inicio de sesión futuro.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID del usuario a banear.",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Estado actualizado a 'Baneado' correctamente."
+          },
+          "404": {
+            "description": "Si el usuario no existe.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ActualizarEstadoPedidoDto": {
+        "type": "object",
+        "properties": {
+          "estadoPedido": {
+            "type": "string",
+            "description": "Nuevo estado que se asignará al pedido.",
+            "nullable": true,
+            "example": "En preparación"
+          }
+        },
+        "additionalProperties": false,
+        "description": "DTO utilizado para modificar el progreso de un pedido en el sistema."
+      },
+      "ActualizarProductoDto": {
+        "type": "object",
+        "properties": {
+          "nombre": {
+            "type": "string",
+            "description": "Nuevo nombre para el producto.",
+            "nullable": true,
+            "example": "Cerveza Importada 330ml"
+          },
+          "precio": {
+            "type": "number",
+            "description": "Precio de venta actualizado.",
+            "format": "double",
+            "nullable": true,
+            "example": 12,50
+          },
+          "stock": {
+            "type": "integer",
+            "description": "Cantidad disponible en inventario.",
+            "format": "int32",
+            "nullable": true,
+            "example": 50
+          },
+          "estadoActivo": {
+            "type": "boolean",
+            "description": "Define si el producto está disponible para la venta (true) o fuera de catálogo (false).",
+            "nullable": true,
+            "example": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Objeto de transferencia para la actualización parcial o total de un producto existente."
+      },
+      "ActualizarSalaDto": {
+        "type": "object",
+        "properties": {
+          "precioHora": {
+            "type": "number",
+            "description": "Tarifa actualizada por cada hora de uso de la sala.",
+            "format": "double",
+            "nullable": true,
+            "example": 25,50
+          },
+          "capacidad": {
+            "type": "integer",
+            "description": "Capacidad máxima de personas permitidas en la sala.",
+            "format": "int32",
+            "nullable": true,
+            "example": 10
+          },
+          "estado": {
+            "type": "string",
+            "description": "Estado operativo de la sala (Disponible, Ocupada, Inactiva).",
+            "nullable": true,
+            "example": "Disponible"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Objeto de transferencia para la actualización parcial de los parámetros de una sala."
+      },
+      "ActualizarUsuarioDto": {
+        "type": "object",
+        "properties": {
+          "nombre": {
+            "type": "string",
+            "description": "Nombre completo o alias actualizado del usuario.",
+            "nullable": true,
+            "example": "Carlos Mario Restrepo"
+          },
+          "correo": {
+            "type": "string",
+            "description": "Dirección de correo electrónico actualizada. Debe tener un formato válido.",
+            "nullable": true,
+            "example": "carlos.m@ejemplo.com"
+          },
+          "estado": {
+            "type": "string",
+            "description": "Estado administrativo del usuario dentro del sistema.",
+            "nullable": true,
+            "example": "Activo"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Objeto de transferencia para la actualización de información de perfil y estado de un usuario."
+      },
+      "CerrarReservaDto": {
+        "type": "object",
+        "properties": {
+          "horaSalida": {
+            "type": "string",
+            "description": "Fecha y hora exacta en la que el cliente desocupa la sala.",
+            "format": "date-time",
+            "example": "2026-02-08 23:30"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Objeto de transferencia de datos para la finalización y cierre de una reserva."
+      },
+      "CrearDetallePedidoDto": {
+        "type": "object",
+        "properties": {
+          "idProducto": {
+            "type": "integer",
+            "description": "ID del producto que se desea pedir.",
+            "format": "int32",
+            "example": 5
+          },
+          "cantidad": {
+            "type": "integer",
+            "description": "Cantidad de unidades del producto. Debe ser mayor a cero y estar disponible en stock.",
+            "format": "int32",
+            "example": 2
+          }
+        },
+        "additionalProperties": false,
+        "description": "Representa el detalle individual de un producto dentro de la solicitud de pedido."
+      },
+      "CrearPedidoDto": {
+        "type": "object",
+        "properties": {
+          "idReserva": {
+            "type": "integer",
+            "description": "Identificador único de la reserva activa a la cual se cargará el consumo.",
+            "format": "int32",
+            "example": 10
+          },
+          "detalles": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CrearDetallePedidoDto"
+            },
+            "description": "Listado de productos y sus respectivas cantidades solicitadas por el cliente.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Estructura de datos requerida para registrar un nuevo pedido dentro de una reserva."
+      },
+      "CrearProductoDto": {
+        "type": "object",
+        "properties": {
+          "nombre": {
+            "type": "string",
+            "description": "Nombre descriptivo del producto.",
+            "nullable": true,
+            "example": "Nachos con Queso Grande"
+          },
+          "precio": {
+            "type": "number",
+            "description": "Precio de venta al público.",
+            "format": "double",
+            "example": 15,00
+          },
+          "stock": {
+            "type": "integer",
+            "description": "Cantidad inicial de unidades disponibles en el inventario.",
+            "format": "int32",
+            "example": 100
+          }
+        },
+        "additionalProperties": false,
+        "description": "Estructura de datos requerida para el registro de un nuevo producto en el catálogo."
+      },
+      "CrearReservaDto": {
+        "type": "object",
+        "properties": {
+          "idSala": {
+            "type": "integer",
+            "description": "Identificador de la sala que se desea reservar.",
+            "format": "int32",
+            "example": 1
+          },
+          "idUsuario": {
+            "type": "integer",
+            "description": "Identificador del usuario (cliente o responsable) que realiza la reserva.",
+            "format": "int32",
+            "example": 5
+          },
+          "fechaHoraInicio": {
+            "type": "string",
+            "description": "Fecha y hora programada para el inicio de la sesión de Karaoke.",
+            "format": "date-time",
+            "example": "2026-03-08 20:00"
+          },
+          "fechaHoraFin": {
+            "type": "string",
+            "description": "Fecha y hora estimada en la que finalizará la sesión.",
+            "format": "date-time",
+            "example": "2026-04-08T22:00:00Z"
+          },
+          "cantidadPersonas": {
+            "type": "integer",
+            "description": "Número de personas que asistirán. Ayuda a validar si la capacidad de la sala es adecuada.",
+            "format": "int32",
+            "example": 4
+          }
+        },
+        "additionalProperties": false,
+        "description": "Estructura de datos necesaria para registrar la apertura de una nueva reserva de sala."
+      },
+      "CrearSalaDto": {
+        "type": "object",
+        "properties": {
+          "numeroSala": {
+            "type": "string",
+            "description": "Nombre o número identificador de la sala (ej: \"Sala 01\", \"VIP Platinum\").",
+            "nullable": true,
+            "example": "Sala 05"
+          },
+          "precioHora": {
+            "type": "number",
+            "description": "Tarifa establecida por hora para el uso de esta sala.",
+            "format": "double",
+            "example": 30,00
+          },
+          "capacidad": {
+            "type": "integer",
+            "description": "Cantidad máxima de personas que pueden ocupar la sala cómodamente.",
+            "format": "int32",
+            "example": 8
+          }
+        },
+        "additionalProperties": false,
+        "description": "Datos requeridos para el registro y creación de una nueva sala en el sistema."
+      },
+      "CrearUsuarioDto": {
+        "type": "object",
+        "properties": {
+          "nombre": {
+            "type": "string",
+            "description": "Nombre completo de la persona.",
+            "nullable": true,
+            "example": "Alejandro Martínez"
+          },
+          "rol": {
+            "type": "string",
+            "description": "Perfil de acceso asignado al usuario.",
+            "nullable": true,
+            "example": "Empleado"
+          },
+          "username": {
+            "type": "string",
+            "description": "Nombre de usuario único para el inicio de sesión.",
+            "nullable": true,
+            "example": "amartinez_karaoke"
+          },
+          "contraseña": {
+            "type": "string",
+            "description": "Clave de acceso secreta.",
+            "nullable": true,
+            "example": "ClaveSegura123!"
+          },
+          "correo": {
+            "type": "string",
+            "description": "Dirección de correo electrónico de contacto.",
+            "nullable": true,
+            "example": "alejandro.m@empresa.com"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Estructura de datos requerida para el registro inicial de un nuevo usuario en el sistema."
+      },
+      "DetallePedido": {
+        "type": "object",
+        "properties": {
+          "idDetallePedido": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "idPedido": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "idProducto": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "cantidad": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "subtotal": {
+            "type": "number",
+            "format": "double"
+          },
+          "pedido": {
+            "$ref": "#/components/schemas/Pedido"
+          },
+          "producto": {
+            "$ref": "#/components/schemas/Producto"
+          }
+        },
+        "additionalProperties": false
+      },
+      "LoginDto": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string",
+            "description": "Nombre de usuario único registrado en el sistema.",
+            "nullable": true,
+            "example": "admin_karaoke"
+          },
+          "contraseña": {
+            "type": "string",
+            "description": "Contraseña asociada a la cuenta del usuario.",
+            "nullable": true,
+            "example": "Password123!"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Objeto de transferencia para el inicio de sesión. \r\nContiene las credenciales necesarias para autenticar a un usuario y generar un token de acceso."
+      },
+      "LoginResponseDto": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string",
+            "description": "Token de autenticación JWT (JSON Web Token). \r\nDebe incluirse en la cabecera 'Authorization' como 'Bearer [token]' en peticiones protegidas.",
+            "nullable": true,
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+          },
+          "nombre": {
+            "type": "string",
+            "description": "Nombre completo del usuario autenticado para mostrar en la interfaz.",
+            "nullable": true,
+            "example": "Administrador Principal"
+          },
+          "rol": {
+            "type": "string",
+            "description": "Rol asignado al usuario que determina sus niveles de acceso en la aplicación.",
+            "nullable": true,
+            "example": "Admin"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Estructura de respuesta tras un inicio de sesión exitoso.\r\nContiene la credencial de acceso y datos básicos del perfil."
+      },
+      "Pedido": {
+        "type": "object",
+        "properties": {
+          "idPedido": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "idReserva": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "estadoPedido": {
+            "type": "string",
+            "nullable": true
+          },
+          "fechaHora": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "total": {
+            "type": "number",
+            "format": "double"
+          },
+          "reserva": {
+            "$ref": "#/components/schemas/Reserva"
+          },
+          "detalles": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DetallePedido"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ProblemDetails": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "nullable": true
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "detail": {
+            "type": "string",
+            "nullable": true
+          },
+          "instance": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": { }
+      },
+      "Producto": {
+        "type": "object",
+        "properties": {
+          "idProducto": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "nombre": {
+            "type": "string",
+            "nullable": true
+          },
+          "precio": {
+            "type": "number",
+            "format": "double"
+          },
+          "estadoActivo": {
+            "type": "boolean"
+          },
+          "stock": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "detalles": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DetallePedido"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "Reserva": {
+        "type": "object",
+        "properties": {
+          "idReserva": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "idSala": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "idUsuario": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "fechaHoraInicio": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "fechaHoraFin": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "estadoReserva": {
+            "type": "string",
+            "nullable": true
+          },
+          "cantidadPersonas": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "valorTotal": {
+            "type": "number",
+            "format": "double"
+          },
+          "horaLlegada": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "horaSalida": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "sala": {
+            "$ref": "#/components/schemas/Sala"
+          },
+          "usuario": {
+            "$ref": "#/components/schemas/Usuario"
+          },
+          "pedidos": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Pedido"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "Sala": {
+        "type": "object",
+        "properties": {
+          "idSala": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "numeroSala": {
+            "type": "string",
+            "nullable": true
+          },
+          "estado": {
+            "type": "string",
+            "nullable": true
+          },
+          "precioHora": {
+            "type": "number",
+            "format": "double"
+          },
+          "capacidad": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "reservas": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Reserva"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "Usuario": {
+        "type": "object",
+        "properties": {
+          "idUsuario": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "nombre": {
+            "type": "string",
+            "nullable": true
+          },
+          "rol": {
+            "type": "string",
+            "nullable": true
+          },
+          "username": {
+            "type": "string",
+            "nullable": true
+          },
+          "contraseña": {
+            "type": "string",
+            "nullable": true
+          },
+          "correo": {
+            "type": "string",
+            "nullable": true
+          },
+          "estado": {
+            "type": "string",
+            "nullable": true
+          },
+          "reservas": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Reserva"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "UsuarioResponseDto": {
+        "type": "object",
+        "properties": {
+          "idUsuario": {
+            "type": "integer",
+            "description": "Identificador único del usuario.",
+            "format": "int32",
+            "example": 1
+          },
+          "nombre": {
+            "type": "string",
+            "description": "Nombre completo registrado.",
+            "nullable": true,
+            "example": "Andrea Castrillón"
+          },
+          "rol": {
+            "type": "string",
+            "description": "Nivel de acceso (Admin, Empleado, Cliente).",
+            "nullable": true,
+            "example": "Cliente"
+          },
+          "username": {
+            "type": "string",
+            "description": "Nombre de cuenta utilizado para el acceso al sistema.",
+            "nullable": true,
+            "example": "acastrillon_karaoke"
+          },
+          "correo": {
+            "type": "string",
+            "description": "Correo electrónico de contacto.",
+            "nullable": true,
+            "example": "andrea@ejemplo.com"
+          },
+          "estado": {
+            "type": "string",
+            "description": "Estado de la cuenta (Activo, Inactivo, Baneado).",
+            "nullable": true,
+            "example": "Activo"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Estructura de respuesta que representa la información pública y administrativa de un usuario."
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Auth"
+    },
+    {
+      "name": "Pedido"
+    },
+    {
+      "name": "Producto"
+    },
+    {
+      "name": "Reserva"
+    },
+    {
+      "name": "Sala"
+    },
+    {
+      "name": "Usuario"
+    }
+  ]
+}

@@ -1,0 +1,395 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>KaraokeApp.API</name>
+    </assembly>
+    <members>
+        <member name="T:KaraokeApp.API.Controllers.AuthController">
+            <summary>
+            Controlador encargado de la autenticación y gestión de acceso de usuarios.
+            </summary>
+        </member>
+        <member name="M:KaraokeApp.API.Controllers.AuthController.#ctor(KaraokeApp.Core.Interfaces.IUsuarioRepository,KaraokeApp.Infrastructure.Services.TokenService)">
+            <summary>
+            Constructor del controlador de autenticación.
+            </summary>
+            <param name="repo">Repositorio para la gestión de datos de usuario.</param>
+            <param name="tokenService">Servicio encargado de la generación de tokens JWT.</param>
+        </member>
+        <member name="M:KaraokeApp.API.Controllers.AuthController.Login(KaraokeApp.Core.DTOs.Usuario.LoginDto)">
+            <summary>
+            Inicia sesión en el sistema y genera un token de acceso.
+            </summary>
+            <remarks>
+            Permite a los usuarios registrados obtener un token JWT válido para consumir servicios protegidos.
+            El usuario debe estar en estado "Activo".
+            </remarks>
+            <param name="dto">Objeto con las credenciales de acceso (Username y Contraseña).</param>
+            <returns>Retorna el token generado junto con la información básica del perfil del usuario.</returns>
+            <response code="200">Retorna el token exitosamente.</response>
+            <response code="401">Si las credenciales son incorrectas o el usuario no está activo.</response>
+        </member>
+        <member name="T:KaraokeApp.API.Controllers.PedidoController">
+            <summary>
+            Controlador para la gestión de pedidos de productos en las reservas.
+            </summary>
+        </member>
+        <member name="M:KaraokeApp.API.Controllers.PedidoController.#ctor(KaraokeApp.Core.Interfaces.IPedidoRepository,KaraokeApp.Core.Interfaces.IProductoRepository)">
+            <summary>
+            Constructor del controlador de Pedidos.
+            </summary>
+        </member>
+        <member name="M:KaraokeApp.API.Controllers.PedidoController.GetAll">
+            <summary>
+            Obtiene el listado completo de pedidos realizados.
+            </summary>
+            <returns>Una lista de todos los pedidos registrados.</returns>
+            <response code="200">Retorna la lista de pedidos.</response>
+            <response code="401">No autorizado. Requiere token válido.</response>
+            <response code="403">Prohibido. Solo Admin o Empleado pueden acceder.</response>
+        </member>
+        <member name="M:KaraokeApp.API.Controllers.PedidoController.GetPendientes">
+            <summary>
+            Obtiene los pedidos que aún no han sido entregados o están pendientes.
+            </summary>
+            <response code="200">Retorna los pedidos pendientes.</response>
+        </member>
+        <member name="M:KaraokeApp.API.Controllers.PedidoController.GetByReserva(System.Int32)">
+            <summary>
+            Obtiene todos los pedidos asociados a una reserva específica.
+            </summary>
+            <param name="idReserva">Identificador único de la reserva.</param>
+            <response code="200">Retorna los pedidos de la reserva.</response>
+        </member>
+        <member name="M:KaraokeApp.API.Controllers.PedidoController.GetById(System.Int32)">
+            <summary>
+            Obtiene el detalle de un pedido específico por su ID.
+            </summary>
+            <param name="id">ID del pedido.</param>
+            <response code="200">Retorna el pedido encontrado.</response>
+            <response code="404">Si el pedido no existe.</response>
+        </member>
+        <member name="M:KaraokeApp.API.Controllers.PedidoController.Crear(KaraokeApp.Core.DTOs.Pedido.CrearPedidoDto)">
+            <summary>
+            Crea un nuevo pedido, valida el stock y descuenta las existencias de los productos.
+            </summary>
+            <param name="dto">Información del pedido y lista de productos.</param>
+            <response code="201">Pedido creado exitosamente.</response>
+            <response code="400">Si el producto no está activo o no hay stock suficiente.</response>
+            <response code="404">Si alguno de los productos en el detalle no existe.</response>
+        </member>
+        <member name="M:KaraokeApp.API.Controllers.PedidoController.ActualizarEstado(System.Int32,KaraokeApp.Core.DTOs.Pedido.ActualizarEstadoPedidoDto)">
+            <summary>
+            Actualiza el estado de un pedido (ej. de Pendiente a Entregado).
+            </summary>
+            <param name="id">ID del pedido a modificar.</param>
+            <param name="dto">Nuevo estado del pedido.</param>
+            <response code="204">Estado actualizado correctamente.</response>
+            <response code="400">Si el estado enviado no es válido.</response>
+            <response code="404">Si el pedido no existe.</response>
+        </member>
+        <member name="T:KaraokeApp.API.Controllers.API.Controllers.ProductoController">
+            <summary>
+            Controlador para la gestión del catálogo de productos y suministros del Karaoke.
+            </summary>
+        </member>
+        <member name="M:KaraokeApp.API.Controllers.API.Controllers.ProductoController.#ctor(KaraokeApp.Core.Interfaces.IProductoRepository)">
+            <summary>
+            Constructor del controlador de Productos.
+            </summary>
+            <param name="repo">Repositorio para el acceso a datos de productos.</param>
+        </member>
+        <member name="M:KaraokeApp.API.Controllers.API.Controllers.ProductoController.GetActivos">
+            <summary>
+            Obtiene la lista de productos que están marcados como activos para la venta.
+            </summary>
+            <remarks>Este endpoint es de acceso público.</remarks>
+            <returns>Lista de productos activos.</returns>
+            <response code="200">Retorna la lista de productos disponibles.</response>
+        </member>
+        <member name="M:KaraokeApp.API.Controllers.API.Controllers.ProductoController.GetAll">
+            <summary>
+            Obtiene el catálogo completo de productos (activos e inactivos).
+            </summary>
+            <returns>Lista total de productos.</returns>
+            <response code="200">Retorna todos los productos.</response>
+            <response code="403">Acceso denegado. Se requiere rol de Admin.</response>
+        </member>
+        <member name="M:KaraokeApp.API.Controllers.API.Controllers.ProductoController.GetById(System.Int32)">
+            <summary>
+            Obtiene la información detallada de un producto por su ID.
+            </summary>
+            <param name="id">Identificador único del producto.</param>
+            <response code="200">Retorna el producto solicitado.</response>
+            <response code="404">Si el producto no existe.</response>
+        </member>
+        <member name="M:KaraokeApp.API.Controllers.API.Controllers.ProductoController.Crear(KaraokeApp.Core.DTOs.Producto.CrearProductoDto)">
+            <summary>
+            Registra un nuevo producto en el catálogo.
+            </summary>
+            <param name="dto">Datos del nuevo producto.</param>
+            <response code="201">Producto creado exitosamente.</response>
+            <response code="400">Si los datos enviados son inválidos.</response>
+        </member>
+        <member name="M:KaraokeApp.API.Controllers.API.Controllers.ProductoController.Actualizar(System.Int32,KaraokeApp.Core.DTOs.Producto.ActualizarProductoDto)">
+            <summary>
+            Actualiza la información de un producto existente de forma total o parcial.
+            </summary>
+            <param name="id">ID del producto a actualizar.</param>
+            <param name="dto">Nuevos datos del producto.</param>
+            <response code="204">Actualización exitosa (sin contenido).</response>
+            <response code="404">Si el producto a actualizar no existe.</response>
+        </member>
+        <member name="M:KaraokeApp.API.Controllers.API.Controllers.ProductoController.Desactivar(System.Int32)">
+            <summary>
+            Desactiva lógicamente un producto del catálogo para que no esté disponible al público.
+            </summary>
+            <param name="id">ID del producto a desactivar.</param>
+            <response code="204">Desactivación exitosa.</response>
+            <response code="404">Si el producto no existe.</response>
+        </member>
+        <member name="T:KaraokeApp.API.Controllers.ReservaController">
+            <summary>
+            Controlador para la gestión de reservas de salas, control de tiempos y facturación.
+            </summary>
+        </member>
+        <member name="M:KaraokeApp.API.Controllers.ReservaController.#ctor(KaraokeApp.Core.Interfaces.IReservaRepository,KaraokeApp.Core.Interfaces.ISalaRepository,KaraokeApp.Infrastructure.Services.QrService)">
+            <summary>
+            Constructor del controlador de Reservas.
+            </summary>
+        </member>
+        <member name="M:KaraokeApp.API.Controllers.ReservaController.GetAll">
+            <summary>
+            Obtiene el historial completo de todas las reservas registradas.
+            </summary>
+            <returns>Lista de todas las reservas.</returns>
+            <response code="200">Retorna la lista de reservas.</response>
+            <response code="403">Acceso denegado. Se requiere rol de Admin o Empleado.</response>
+        </member>
+        <member name="M:KaraokeApp.API.Controllers.ReservaController.GetActivas">
+            <summary>
+            Obtiene únicamente las reservas que se encuentran en estado 'Activa'.
+            </summary>
+            <returns>Lista de reservas activas.</returns>
+            <response code="200">Retorna las reservas activas en curso.</response>
+        </member>
+        <member name="M:KaraokeApp.API.Controllers.ReservaController.GetById(System.Int32)">
+            <summary>
+            Obtiene los detalles de una reserva específica por su ID.
+            </summary>
+            <param name="id">ID de la reserva.</param>
+            <response code="200">Retorna la reserva encontrada.</response>
+            <response code="404">Si la reserva no existe.</response>
+        </member>
+        <member name="M:KaraokeApp.API.Controllers.ReservaController.GetBySalaActiva(System.Int32)">
+            <summary>
+            Busca la reserva activa asociada a una sala específica.
+            </summary>
+            <remarks>Este endpoint es útil para que los clientes identifiquen su sesión actual mediante el escaneo de la sala.</remarks>
+            <param name="idSala">ID de la sala a consultar.</param>
+            <response code="200">Retorna la reserva activa de la sala.</response>
+            <response code="404">Si no hay una reserva activa para esa sala.</response>
+        </member>
+        <member name="M:KaraokeApp.API.Controllers.ReservaController.Crear(KaraokeApp.Core.DTOs.Reserva.CrearReservaDto)">
+            <summary>
+            Registra una nueva reserva, ocupa la sala y genera un código QR de acceso.
+            </summary>
+            <param name="dto">Datos para la apertura de la reserva.</param>
+            <response code="201">Reserva creada exitosamente. Incluye el QR en formato Base64.</response>
+            <response code="400">Si la sala ya está ocupada o los datos son inválidos.</response>
+            <response code="404">Si la sala especificada no existe.</response>
+        </member>
+        <member name="M:KaraokeApp.API.Controllers.ReservaController.Cerrar(System.Int32,KaraokeApp.Core.DTOs.Reserva.CerrarReservaDto)">
+            <summary>
+            Finaliza una reserva activa, calcula el valor total a pagar y libera la sala.
+            </summary>
+            <param name="id">ID de la reserva a cerrar.</param>
+            <param name="dto">Datos de finalización (hora de salida).</param>
+            <response code="200">Reserva cerrada con el cálculo del total realizado.</response>
+            <response code="400">Si la reserva ya estaba cerrada o hay inconsistencia en los datos.</response>
+            <response code="404">Si la reserva o la sala asociada no existen.</response>
+        </member>
+        <member name="T:KaraokeApp.API.Controllers.SalaController">
+            <summary>
+            Controlador para la gestión física y administrativa de las salas de karaoke.
+            </summary>
+        </member>
+        <member name="M:KaraokeApp.API.Controllers.SalaController.#ctor(KaraokeApp.Core.Interfaces.ISalaRepository,KaraokeApp.Infrastructure.Services.QrService)">
+            <summary>
+            Constructor del controlador de Sala.
+            </summary>
+        </member>
+        <member name="M:KaraokeApp.API.Controllers.SalaController.GetDisponibles">
+            <summary>
+            Obtiene todas las salas que tienen estado 'Disponible'.
+            </summary>
+            <remarks>Accesible para todos los usuarios (clientes y personal).</remarks>
+            <response code="200">Retorna el listado de salas libres.</response>
+        </member>
+        <member name="M:KaraokeApp.API.Controllers.SalaController.GetAll">
+            <summary>
+            Obtiene el listado completo de todas las salas registradas.
+            </summary>
+            <response code="200">Retorna todas las salas.</response>
+            <response code="403">Acceso denegado. Requiere rol de Admin o Empleado.</response>
+        </member>
+        <member name="M:KaraokeApp.API.Controllers.SalaController.GetById(System.Int32)">
+            <summary>
+            Obtiene la información detallada de una sala específica por su ID.
+            </summary>
+            <param name="id">ID único de la sala.</param>
+            <response code="200">Retorna la sala encontrada.</response>
+            <response code="404">Si la sala no existe.</response>
+        </member>
+        <member name="M:KaraokeApp.API.Controllers.SalaController.Crear(KaraokeApp.Core.DTOs.Sala.CrearSalaDto)">
+            <summary>
+            Registra una nueva sala en el sistema.
+            </summary>
+            <param name="dto">Datos de configuración de la nueva sala.</param>
+            <response code="201">Sala creada con éxito.</response>
+            <response code="403">Acceso denegado. Solo administradores pueden crear salas.</response>
+        </member>
+        <member name="M:KaraokeApp.API.Controllers.SalaController.Actualizar(System.Int32,KaraokeApp.Core.DTOs.Sala.ActualizarSalaDto)">
+            <summary>
+            Actualiza los parámetros de una sala (precio, capacidad o estado).
+            </summary>
+            <param name="id">ID de la sala a modificar.</param>
+            <param name="dto">Nuevos valores para la sala.</param>
+            <response code="204">Actualización realizada correctamente.</response>
+            <response code="404">Si la sala no existe.</response>
+        </member>
+        <member name="M:KaraokeApp.API.Controllers.SalaController.Desactivar(System.Int32)">
+            <summary>
+            Cambia el estado de una sala a 'Inactiva', impidiendo su uso para nuevas reservas.
+            </summary>
+            <param name="id">ID de la sala a desactivar.</param>
+            <response code="204">Sala desactivada exitosamente.</response>
+            <response code="404">Si la sala no existe.</response>
+        </member>
+        <member name="M:KaraokeApp.API.Controllers.SalaController.GetQr(System.Int32)">
+            <summary>
+            Genera y retorna un código QR en formato Base64 para una sala específica.
+            </summary>
+            <remarks>Permite a las aplicaciones móviles obtener el código para ser impreso o mostrado digitalmente.</remarks>
+            <param name="id">ID de la sala.</param>
+            <response code="200">Retorna el código QR generado.</response>
+            <response code="400">Si la sala está inactiva y no puede generar QR.</response>
+            <response code="404">Si la sala no existe.</response>
+        </member>
+        <member name="T:KaraokeApp.API.Controllers.UsuarioController">
+            <summary>
+            Controlador para la administración de usuarios, gestión de roles y control de acceso.
+            </summary>
+            <remarks>
+            Todas las operaciones en este controlador están restringidas exclusivamente al rol de Administrador.
+            </remarks>
+        </member>
+        <member name="M:KaraokeApp.API.Controllers.UsuarioController.#ctor(KaraokeApp.Core.Interfaces.IUsuarioRepository)">
+            <summary>
+            Constructor del controlador de Usuarios.
+            </summary>
+        </member>
+        <member name="M:KaraokeApp.API.Controllers.UsuarioController.GetAll">
+            <summary>
+            Obtiene el listado completo de todos los usuarios registrados en el sistema.
+            </summary>
+            <returns>Una lista de usuarios.</returns>
+            <response code="200">Retorna la lista de usuarios exitosamente.</response>
+            <response code="401">No autorizado. Requiere un token válido.</response>
+            <response code="403">Prohibido. Solo el Administrador puede ver esta lista.</response>
+        </member>
+        <member name="M:KaraokeApp.API.Controllers.UsuarioController.GetById(System.Int32)">
+            <summary>
+            Obtiene la información detallada de un usuario por su identificador único.
+            </summary>
+            <param name="id">ID del usuario.</param>
+            <response code="200">Retorna el usuario solicitado.</response>
+            <response code="404">Si el usuario no existe en la base de datos.</response>
+        </member>
+        <member name="M:KaraokeApp.API.Controllers.UsuarioController.GetByRol(System.String)">
+            <summary>
+            Filtra y obtiene usuarios según su rol asignado (Admin, Empleado, Cliente).
+            </summary>
+            <param name="rol">Nombre del rol a filtrar.</param>
+            <response code="200">Retorna la lista de usuarios con el rol especificado.</response>
+        </member>
+        <member name="M:KaraokeApp.API.Controllers.UsuarioController.Crear(KaraokeApp.Core.DTOs.Usuario.CrearUsuarioDto)">
+            <summary>
+            Registra un nuevo usuario en el sistema con contraseña encriptada.
+            </summary>
+            <remarks>
+            La contraseña se procesa mediante BCrypt antes de ser almacenada. 
+            El estado inicial por defecto es 'Activo'.
+            </remarks>
+            <param name="dto">Datos de registro del usuario.</param>
+            <response code="201">Usuario creado exitosamente.</response>
+            <response code="400">Si los datos de registro son inválidos o el username ya existe.</response>
+        </member>
+        <member name="M:KaraokeApp.API.Controllers.UsuarioController.Actualizar(System.Int32,KaraokeApp.Core.DTOs.Usuario.ActualizarUsuarioDto)">
+            <summary>
+            Actualiza la información de perfil o el estado de un usuario existente.
+            </summary>
+            <param name="id">ID del usuario a actualizar.</param>
+            <param name="dto">Nuevos datos del usuario.</param>
+            <response code="204">Actualización realizada correctamente.</response>
+            <response code="404">Si el usuario no existe.</response>
+        </member>
+        <member name="M:KaraokeApp.API.Controllers.UsuarioController.Banear(System.Int32)">
+            <summary>
+            Cambia el estado del usuario a 'Baneado', impidiendo su inicio de sesión futuro.
+            </summary>
+            <param name="id">ID del usuario a banear.</param>
+            <response code="204">Estado actualizado a 'Baneado' correctamente.</response>
+            <response code="404">Si el usuario no existe.</response>
+        </member>
+        <member name="T:Program">
+            <summary>
+            Auto-generated public partial Program class for top-level statement apps.
+            </summary>
+        </member>
+        <member name="M:Microsoft.AspNetCore.OpenApi.Generated.DocumentationCommentIdHelper.CreateDocumentationId(System.Type)">
+            <summary>
+            Generates a documentation comment ID for a type.
+            Example: T:Namespace.Outer+Inner`1 becomes T:Namespace.Outer.Inner`1
+            </summary>
+        </member>
+        <member name="M:Microsoft.AspNetCore.OpenApi.Generated.DocumentationCommentIdHelper.CreateDocumentationId(System.Reflection.PropertyInfo)">
+            <summary>
+            Generates a documentation comment ID for a property.
+            Example: P:Namespace.ContainingType.PropertyName or for an indexer P:Namespace.ContainingType.Item(System.Int32)
+            </summary>
+        </member>
+        <member name="M:Microsoft.AspNetCore.OpenApi.Generated.DocumentationCommentIdHelper.CreateDocumentationId(System.Type,System.String)">
+            <summary>
+            Generates a documentation comment ID for a property given its container type and property name.
+            Example: P:Namespace.ContainingType.PropertyName
+            </summary>
+        </member>
+        <member name="M:Microsoft.AspNetCore.OpenApi.Generated.DocumentationCommentIdHelper.CreateDocumentationId(System.Reflection.MethodInfo)">
+            <summary>
+            Generates a documentation comment ID for a method (or constructor).
+            For example:
+              M:Namespace.ContainingType.MethodName(ParamType1,ParamType2)~ReturnType
+              M:Namespace.ContainingType.#ctor(ParamType)
+            </summary>
+        </member>
+        <member name="M:Microsoft.AspNetCore.OpenApi.Generated.DocumentationCommentIdHelper.GetTypeDocId(System.Type,System.Boolean,System.Boolean)">
+            <summary>
+            Generates a documentation ID string for a type.
+            This method handles nested types (replacing '+' with '.'),
+            generic types, arrays, pointers, by-ref types, and generic parameters.
+            The <paramref name="includeGenericArguments"/> flag controls whether
+            constructed generic type arguments are emitted, while <paramref name="omitGenericArity"/>
+            controls whether the generic arity marker (e.g. "`1") is appended.
+            </summary>
+        </member>
+        <member name="M:Microsoft.AspNetCore.OpenApi.Generated.DocumentationCommentIdHelper.NormalizeDocId(System.String)">
+            <summary>
+            Normalizes a documentation comment ID to match the compiler-style format.
+            Strips the return type suffix for ordinary methods but retains it for conversion operators.
+            </summary>
+            <param name="docId">The documentation comment ID to normalize.</param>
+            <returns>The normalized documentation comment ID.</returns>
+        </member>
+    </members>
+</doc>
