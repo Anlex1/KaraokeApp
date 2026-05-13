@@ -2,7 +2,7 @@ import { Slot, useRouter, useSegments } from "expo-router";
 import { useEffect, useState } from "react";
 import { ActivityIndicator, View } from "react-native";
 import "../global.css";
-import { getSession } from "../lib/auth";
+import { getUsuario } from "../services/authService";
 import { Usuario } from "../types";
 
 export default function RootLayout() {
@@ -12,8 +12,8 @@ export default function RootLayout() {
   const segments = useSegments();
 
   useEffect(() => {
-    getSession().then((session) => {
-      setUsuario(session?.usuario ?? null);
+    getUsuario().then((usuario) => {
+      setUsuario(usuario);
       setLoading(false);
     });
   }, []);

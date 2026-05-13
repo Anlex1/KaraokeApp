@@ -1,0 +1,17 @@
+# --- Reglas para el Backend (.NET) ---
+**/[Bb]in/
+**/[Oo]bj/
+**/.vs/
+**/*.user
+**/appsettings.Development.json
+
+# --- Reglas para el Frontend (Node/React/React Native) ---
+**/node_modules/
+**/.expo/
+**/dist/
+**/.env.local
+**/.env
+
+# --- Reglas generales ---
+.DS_Store
+Thumbs.db

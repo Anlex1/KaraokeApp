@@ -12,9 +12,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { api } from "../../lib/api";
-import { saveSession } from "../../lib/auth";
-import { AuthResponse } from "../../types";
+import { login } from "../../services/authService";
 
 export default function LoginScreen() {
   const router = useRouter();
@@ -31,12 +29,7 @@ export default function LoginScreen() {
 
     setLoading(true);
     try {
-      const data = await api.post<AuthResponse>("/Auth/login", {
-        username,
-        contraseña: password,
-      });
-
-      await saveSession(data.token, data.usuario);
+      const data = await login(username, password);
       await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
 
       if (data.usuario.rol === "admin") router.replace("/(admin)");
@@ -62,7 +55,6 @@ export default function LoginScreen() {
           <Text style={{ color: "white", fontSize: 32, fontWeight: "bold", marginTop: 12, letterSpacing: 4 }}>
             KaraokeApp
           </Text>
-          <Text className="text-red-500 text-2xl">Test Tailwind</Text>
           <Text style={{ color: "#6B7280", fontSize: 13, marginTop: 4 }}>
             Sistema de gestión interno
           </Text>
