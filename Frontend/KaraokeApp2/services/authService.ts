@@ -1,6 +1,6 @@
 import * as SecureStore from "expo-secure-store";
 
-export const BASE_URL = "http://192.168.18.38:5203/api";
+export const BASE_URL = "http://192.168.101.80:5203/api";
 
 export async function login(username: string, password: string) {
   const res = await fetch(`${BASE_URL}/Auth/login`, {

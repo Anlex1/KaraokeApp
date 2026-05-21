@@ -1,6 +1,4 @@
-import { getToken } from "./authService";
-
-const BASE_URL = "http://192.168.20.21:5203/api";
+import { BASE_URL, getToken } from "./authService";
 
 async function headers() {
   const token = await getToken();

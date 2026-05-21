@@ -4,12 +4,11 @@ import React from "react";
 import { Dimensions, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 const { width } = Dimensions.get("window");
-const CARD_WIDTH = (width - 64) / 2; // Distribución exacta para dos columnas
+const CARD_WIDTH = (width - 64) / 2;
 
 export default function SalasEmpleadoScreen() {
   const router = useRouter();
 
-  // Tus datos de las salas
   const salas = [
     { id: "1", nombre: "Sala 1", capacidad: 8, precio: "20.000", estado: "Disponible" },
     { id: "10", nombre: "Sala 10", capacidad: 15, precio: "50.000", estado: "Disponible" },
@@ -17,29 +16,31 @@ export default function SalasEmpleadoScreen() {
 
   return (
     <View style={styles.container}>
-      {/* Header Superior */}
+      {/* --- ENCABEZADO MODIFICADO --- */}
       <View style={styles.headerContainer}>
         <View style={styles.headerLeft}>
-          <TouchableOpacity onPress={() => router.replace("/(employee)")} style={styles.backButton}>
+          {/* AQUÍ ESTÁ EL NUEVO BOTÓN DE VOLVER */}
+          <TouchableOpacity onPress={() => router.replace("/(employee)" as any)} style={styles.backButton}>
             <Ionicons name="arrow-back" size={20} color="white" />
           </TouchableOpacity>
-          <View>
+          
+          <View style={{ marginLeft: 12 }}>
             <Text style={styles.subtitle}>Módulo de Trabajo</Text>
             <Text style={styles.title}>Gestionar Salas</Text>
           </View>
         </View>
-        
+
+        {/* BOTÓN DE REFRESCAR ORIGINAL */}
         <TouchableOpacity style={styles.refreshButton} activeOpacity={0.7}>
           <Ionicons name="refresh" size={20} color="#7C3AED" />
         </TouchableOpacity>
       </View>
+      {/* ------------------------------ */}
 
-      {/* Grid de las salas en 2 columnas */}
       <ScrollView contentContainerStyle={styles.gridContainer} showsVerticalScrollIndicator={false}>
         <View style={styles.row}>
           {salas.map((sala) => (
             <View key={sala.id} style={styles.salaCard}>
-              
               <View style={styles.cardHeader}>
                 <Text style={styles.salaTitle}>{sala.nombre}</Text>
                 <View style={styles.badgeDisponible}>
@@ -66,7 +67,6 @@ export default function SalasEmpleadoScreen() {
                 <Text style={styles.btnText}>Abrir Reserva</Text>
                 <Ionicons name="add-circle-outline" size={16} color="#10B981" />
               </TouchableOpacity>
-
             </View>
           ))}
         </View>
@@ -77,12 +77,15 @@ export default function SalasEmpleadoScreen() {
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#0F0F1A" },
+  
+  // Estilos del encabezado actualizados
   headerContainer: { paddingTop: 52, paddingHorizontal: 24, paddingBottom: 20, flexDirection: "row", justifyContent: "space-between", alignItems: "center" },
-  headerLeft: { flexDirection: "row", alignItems: "center", gap: 12 },
+  headerLeft: { flexDirection: "row", alignItems: "center" },
   backButton: { backgroundColor: "#1A1A2E", padding: 8, borderRadius: 10 },
+  refreshButton: { backgroundColor: "#1A1A2E", padding: 10, borderRadius: 12 },
+  
   subtitle: { color: "#6B7280", fontSize: 13 },
   title: { color: "white", fontSize: 24, fontWeight: "bold" },
-  refreshButton: { backgroundColor: "#1A1A2E", padding: 10, borderRadius: 12, borderWidth: 1, borderColor: "#7C3AED22" },
   gridContainer: { paddingHorizontal: 24, paddingTop: 10 },
   row: { flexDirection: "row", flexWrap: "wrap", justifyContent: "space-between", gap: 16 },
   salaCard: { backgroundColor: "#1A1A2E", width: CARD_WIDTH, borderRadius: 16, padding: 16, borderWidth: 1, borderColor: "#10B98122", minHeight: 160, justifyContent: "space-between" },

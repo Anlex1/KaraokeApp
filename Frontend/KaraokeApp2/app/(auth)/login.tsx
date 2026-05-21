@@ -32,8 +32,12 @@ export default function LoginScreen() {
       const data = await login(username, password);
       await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
 
-      if (data.usuario.rol === "admin") router.replace("/(admin)");
-      else router.replace("/(employee)");
+      if (data.usuario.rol === "admin") {
+        router.replace("/(admin)" as any); 
+      } else {
+        router.replace("/(employee)" as any);
+      }
+      
     } catch (e: any) {
       await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
       Alert.alert("Error", e.message || "Credenciales incorrectas.");

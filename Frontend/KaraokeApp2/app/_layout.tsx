@@ -18,7 +18,7 @@ export default function RootLayout() {
     });
   }, []);
 
-  useEffect(() => {
+ useEffect(() => {
     if (loading) return;
 
     const inAuth = segments[0] === "(auth)";
@@ -27,8 +27,12 @@ export default function RootLayout() {
     if (!usuario && !inAuth && !inClient) {
       router.replace("/(auth)/login");
     } else if (usuario) {
-      if (usuario.rol === "admin") router.replace("/(admin)");
-      else router.replace("/(employee)");
+      // AQUÍ VOLVEMOS A LA NORMALIDAD:
+      if (usuario.rol === "admin") {
+        router.replace("/(admin)" as any);
+      } else {
+        router.replace("/(employee)" as any);
+      }
     }
   }, [usuario, loading]);
 
