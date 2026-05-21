@@ -24,7 +24,7 @@ interface DetallePedido {
 interface Pedido {
   idPedido: number;
   idReserva: number;
-  estadoPedido: "Pendiente" | "En preparacion" | "Entregado";
+  estadoPedido: "Pendiente" | "En preparación" | "Entregado";
   fechaHora: string;
   total: number;
   numeroSala?: number;
@@ -33,7 +33,7 @@ interface Pedido {
 
 const ESTADO_CONFIG = {
   Pendiente: { color: "#EAB308", bg: "#EAB30822", label: "Pendiente", icon: "time-outline" as const },
-  "En preparacion": { color: "#7C3AED", bg: "#7C3AED22", label: "En preparación", icon: "flame-outline" as const },
+  "En preparación": { color: "#7C3AED", bg: "#7C3AED22", label: "En preparación", icon: "flame-outline" as const },
   Entregado: { color: "#22C55E", bg: "#22C55E22", label: "Entregado", icon: "checkmark-circle-outline" as const },
 };
 
@@ -71,7 +71,7 @@ export default function PedidosEmpleadoScreen() {
 
       // Ordenar: Pendientes primero, luego En preparación
       resultados.sort((a, b) => {
-        const orden = { Pendiente: 0, "En preparacion": 1, Entregado: 2 };
+        const orden = { Pendiente: 0, "En preparación": 1, Entregado: 2 };
         return (orden[a.estadoPedido] ?? 3) - (orden[b.estadoPedido] ?? 3);
       });
 
@@ -99,7 +99,7 @@ export default function PedidosEmpleadoScreen() {
 
   async function handleCambiarEstado(
     pedido: Pedido,
-    nuevoEstado: "En preparacion" | "Entregado"
+    nuevoEstado: "En preparación" | "Entregado"
   ) {
     setActualizando(pedido.idPedido);
     try {
@@ -115,7 +115,7 @@ export default function PedidosEmpleadoScreen() {
   }
 
   const pendientes = pedidos.filter((p) => p.estadoPedido === "Pendiente").length;
-  const enPrep = pedidos.filter((p) => p.estadoPedido === "En preparacion").length;
+  const enPrep = pedidos.filter((p) => p.estadoPedido === "En preparación").length;
 
   return (
     <View style={styles.container}>
@@ -183,7 +183,7 @@ export default function PedidosEmpleadoScreen() {
               minute: "2-digit",
             });
             const esPendiente = pedido.estadoPedido === "Pendiente";
-            const esEnPrep = pedido.estadoPedido === "En preparacion";
+            const esEnPrep = pedido.estadoPedido === "En preparación";
             const esActualizando = actualizando === pedido.idPedido;
 
             return (
@@ -231,7 +231,7 @@ export default function PedidosEmpleadoScreen() {
                         style={styles.btnPreparar}
                         disabled={esActualizando}
                         onPress={() =>
-                          handleCambiarEstado(pedido, "En preparacion")
+                          handleCambiarEstado(pedido, "En preparación")
                         }
                       >
                         {esActualizando ? (

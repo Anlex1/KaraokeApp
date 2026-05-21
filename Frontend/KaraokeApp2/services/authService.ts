@@ -12,14 +12,17 @@ export async function login(username: string, password: string) {
   if (!res.ok) throw new Error("Credenciales incorrectas");
 
   const data = await res.json();
+  // data = { token, idUsuario, nombre, rol }
 
   const usuario = {
     nombre: data.nombre,
-    rol: data.rol.toLowerCase(),
+    rol: (data.rol as string).toLowerCase(), // "admin" | "empleado"
+    idUsuario: data.idUsuario as number,
   };
 
   await SecureStore.setItemAsync("token", data.token);
   await SecureStore.setItemAsync("usuario", JSON.stringify(usuario));
+
   return { token: data.token, usuario };
 }
 
@@ -28,7 +31,11 @@ export async function logout() {
   await SecureStore.deleteItemAsync("usuario");
 }
 
-export async function getUsuario() {
+export async function getUsuario(): Promise<{
+  nombre: string;
+  rol: string;
+  idUsuario: number;
+} | null> {
   const str = await SecureStore.getItemAsync("usuario");
   return str ? JSON.parse(str) : null;
 }

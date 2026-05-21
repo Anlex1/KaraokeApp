@@ -5,6 +5,7 @@ import React, { useState } from "react";
 import {
   ActivityIndicator,
   Alert,
+  Image,
   KeyboardAvoidingView,
   Platform,
   StyleSheet,
@@ -27,6 +28,7 @@ export default function ReservaScreen() {
 
   const [cantPersonas, setCantPersonas] = useState("1");
   const [loading, setLoading] = useState(false);
+  const [qrImage, setQrImage] = useState<string | null>(null);
 
   const precio = parseFloat(precioHora ?? "0");
   const capMax = parseInt(capacidad ?? "0");
@@ -48,10 +50,12 @@ export default function ReservaScreen() {
 
     setLoading(true);
     try {
-      await crearReserva({
+      const resultado = await crearReserva({
         idSala: parseInt(idSala!),
         cantidadPersonas: cant,
       });
+
+      setQrImage(resultado.qrDataUrl);
 
       await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
 
@@ -203,6 +207,12 @@ export default function ReservaScreen() {
             </>
           )}
         </TouchableOpacity>
+        {qrImage && (
+          <Image
+            source={{ uri: qrImage }}
+            style={{ width: 220, height: 220, alignSelf: "center" }}
+          />
+        )}
       </View>
     </KeyboardAvoidingView>
   );
