@@ -121,3 +121,15 @@ export async function actualizarEstadoPedido(
     throw new Error(texto || "Error al actualizar el estado del pedido");
   }
 }
+
+export async function liberarSala(idSala: number) {
+  const res = await fetch(`${BASE_URL}/Sala/${idSala}`, {
+    method: "PUT",
+    headers: await headers(),
+    body: JSON.stringify({ estado: "Disponible" }),
+  });
+  if (!res.ok) {
+    const texto = await res.text();
+    throw new Error(texto || "Error al liberar la sala");
+  }
+}

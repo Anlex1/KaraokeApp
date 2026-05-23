@@ -24,5 +24,8 @@
         /// </summary>
         /// <example>Admin</example>
         public string Rol { get; set; } = null!;
+
+        public int IdUsuario { get; set; }
+
     }
 }

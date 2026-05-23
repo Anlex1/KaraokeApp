@@ -8,6 +8,7 @@ import {
   Image,
   KeyboardAvoidingView,
   Platform,
+  ScrollView,
   StyleSheet,
   Text,
   TextInput,
@@ -28,47 +29,36 @@ export default function ReservaScreen() {
 
   const [cantPersonas, setCantPersonas] = useState("1");
   const [loading, setLoading] = useState(false);
-  const [qrImage, setQrImage] = useState<string | null>(null);
+  const [reservaCreada, setReservaCreada] = useState<{
+    qrDataUrl: string;
+    idReserva: number;
+  } | null>(null);
 
   const precio = parseFloat(precioHora ?? "0");
   const capMax = parseInt(capacidad ?? "0");
 
   async function handleCrearReserva() {
     const cant = parseInt(cantPersonas);
-
     if (!cantPersonas || isNaN(cant) || cant < 1) {
       Alert.alert("Campo requerido", "Ingresa la cantidad de personas.");
       return;
     }
     if (cant > capMax) {
-      Alert.alert(
-        "Capacidad excedida",
-        `Esta sala tiene capacidad máxima para ${capMax} personas.`
-      );
+      Alert.alert("Capacidad excedida", `Máximo ${capMax} personas.`);
       return;
     }
-
     setLoading(true);
     try {
       const resultado = await crearReserva({
         idSala: parseInt(idSala!),
         cantidadPersonas: cant,
       });
-
-      setQrImage(resultado.qrDataUrl);
-
       await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-
-      Alert.alert(
-        "¡Reserva creada!",
-        `Sala ${numeroSala} abierta para ${cant} persona${cant > 1 ? "s" : ""}.`,
-        [
-          {
-            text: "Ver salas",
-            onPress: () => router.replace("/(employee)/salas" as any),
-          },
-        ]
-      );
+      // En lugar de Alert, mostramos el QR directamente en pantalla
+      setReservaCreada({
+        qrDataUrl: resultado.qrDataUrl,
+        idReserva: resultado.idReserva,
+      });
     } catch (e: any) {
       await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
       Alert.alert("Error", e.message || "No se pudo crear la reserva.");
@@ -87,17 +77,74 @@ export default function ReservaScreen() {
     if (v > 1) setCantPersonas((v - 1).toString());
   };
 
+  // ── Pantalla QR (post-creación) ──────────────────────────────────────────
+  if (reservaCreada) {
+    return (
+      <View style={styles.container}>
+        <View style={styles.header}>
+          <View style={{ marginLeft: 12 }}>
+            <Text style={styles.subtitle}>Reserva #{reservaCreada.idReserva}</Text>
+            <Text style={styles.title}>Sala {numeroSala} — Activa</Text>
+          </View>
+        </View>
+
+        <ScrollView contentContainerStyle={{ alignItems: "center", paddingHorizontal: 24, paddingBottom: 40 }}>
+          {/* Instrucción */}
+          <View style={styles.instruccionCard}>
+            <Ionicons name="information-circle-outline" size={20} color="#7C3AED" />
+            <Text style={styles.instruccionText}>
+              Muéstrale este QR al cliente para que escanee desde su celular y acceda al menú
+            </Text>
+          </View>
+
+          {/* QR grande */}
+          <View style={styles.qrContainer}>
+            <Text style={styles.qrLabel}>SALA {numeroSala}</Text>
+            <Image
+              source={{ uri: reservaCreada.qrDataUrl }}
+              style={styles.qrImage}
+              resizeMode="contain"
+            />
+            <Text style={styles.qrSubLabel}>Escanear para ver menú y hacer pedidos</Text>
+          </View>
+
+          {/* Info de la reserva */}
+          <View style={styles.infoRow}>
+            <View style={styles.infoItem}>
+              <Ionicons name="people-outline" size={18} color="#6B7280" />
+              <Text style={styles.infoLabel}>Personas</Text>
+              <Text style={styles.infoValue}>{cantPersonas}</Text>
+            </View>
+            <View style={styles.infoDivider} />
+            <View style={styles.infoItem}>
+              <Ionicons name="cash-outline" size={18} color="#6B7280" />
+              <Text style={styles.infoLabel}>Tarifa</Text>
+              <Text style={styles.infoValue}>${precio.toLocaleString()}/h</Text>
+            </View>
+          </View>
+
+          {/* Botón volver a salas */}
+          <TouchableOpacity
+            style={styles.btnVolver}
+            onPress={() => router.replace("/(employee)/salas" as any)}
+            activeOpacity={0.85}
+          >
+            <Ionicons name="grid-outline" size={20} color="white" />
+            <Text style={styles.btnVolverText}>Volver a salas</Text>
+          </TouchableOpacity>
+        </ScrollView>
+      </View>
+    );
+  }
+
+  // ── Formulario de reserva ────────────────────────────────────────────────
   return (
     <KeyboardAvoidingView
       style={styles.container}
       behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
-      {/* Header */}
       <View style={styles.header}>
-        <TouchableOpacity
-          onPress={() => router.back()}
-          style={styles.backButton}
-        >
+        <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
           <Ionicons name="arrow-back" size={20} color="white" />
         </TouchableOpacity>
         <View style={{ marginLeft: 12 }}>
@@ -107,15 +154,12 @@ export default function ReservaScreen() {
       </View>
 
       <View style={styles.content}>
-        {/* Info de la sala */}
         <View style={styles.infoCard}>
           <View style={styles.infoRow}>
             <View style={styles.infoItem}>
               <Ionicons name="cash-outline" size={22} color="#7C3AED" />
               <Text style={styles.infoLabel}>Precio por hora</Text>
-              <Text style={styles.infoValue}>
-                ${precio.toLocaleString()}
-              </Text>
+              <Text style={styles.infoValue}>${precio.toLocaleString()}</Text>
             </View>
             <View style={styles.infoDivider} />
             <View style={styles.infoItem}>
@@ -126,72 +170,46 @@ export default function ReservaScreen() {
           </View>
         </View>
 
-        {/* Cantidad de personas */}
         <View style={styles.card}>
           <Text style={styles.cardLabel}>Cantidad de personas</Text>
-
           <View style={styles.counterRow}>
             <TouchableOpacity
-              style={[
-                styles.counterBtn,
-                parseInt(cantPersonas) <= 1 && styles.counterBtnDisabled,
-              ]}
+              style={[styles.counterBtn, parseInt(cantPersonas) <= 1 && styles.counterBtnDisabled]}
               onPress={decrementar}
               activeOpacity={0.7}
             >
-              <Ionicons
-                name="remove"
-                size={22}
-                color={parseInt(cantPersonas) <= 1 ? "#3A3A5C" : "white"}
-              />
+              <Ionicons name="remove" size={22} color={parseInt(cantPersonas) <= 1 ? "#3A3A5C" : "white"} />
             </TouchableOpacity>
-
             <TextInput
               style={styles.counterInput}
               value={cantPersonas}
               onChangeText={(v) => {
                 const n = parseInt(v);
-                if (v === "") {
-                  setCantPersonas("");
-                } else if (!isNaN(n) && n >= 1 && n <= capMax) {
-                  setCantPersonas(v);
-                }
+                if (v === "") setCantPersonas("");
+                else if (!isNaN(n) && n >= 1 && n <= capMax) setCantPersonas(v);
               }}
               keyboardType="numeric"
               textAlign="center"
               maxLength={2}
             />
-
             <TouchableOpacity
-              style={[
-                styles.counterBtn,
-                parseInt(cantPersonas) >= capMax && styles.counterBtnDisabled,
-              ]}
+              style={[styles.counterBtn, parseInt(cantPersonas) >= capMax && styles.counterBtnDisabled]}
               onPress={incrementar}
               activeOpacity={0.7}
             >
-              <Ionicons
-                name="add"
-                size={22}
-                color={parseInt(cantPersonas) >= capMax ? "#3A3A5C" : "white"}
-              />
+              <Ionicons name="add" size={22} color={parseInt(cantPersonas) >= capMax ? "#3A3A5C" : "white"} />
             </TouchableOpacity>
           </View>
-
-          <Text style={styles.counterHint}>
-            Máximo {capMax} personas para esta sala
-          </Text>
+          <Text style={styles.counterHint}>Máximo {capMax} personas</Text>
         </View>
 
-        {/* Nota informativa */}
         <View style={styles.noteCard}>
           <Ionicons name="information-circle-outline" size={18} color="#7C3AED" />
           <Text style={styles.noteText}>
-            El tiempo comienza a contar desde que se confirma la reserva. El cobro se calcula automáticamente al cierre.
+            El tiempo comienza al confirmar. El cobro se calcula al cierre.
           </Text>
         </View>
 
-        {/* Botón confirmar */}
         <TouchableOpacity
           style={styles.btnConfirmar}
           onPress={handleCrearReserva}
@@ -207,12 +225,6 @@ export default function ReservaScreen() {
             </>
           )}
         </TouchableOpacity>
-        {qrImage && (
-          <Image
-            source={{ uri: qrImage }}
-            style={{ width: 220, height: 220, alignSelf: "center" }}
-          />
-        )}
       </View>
     </KeyboardAvoidingView>
   );
@@ -240,12 +252,7 @@ const styles = StyleSheet.create({
   },
   infoRow: { flexDirection: "row", alignItems: "center" },
   infoItem: { flex: 1, alignItems: "center", gap: 6 },
-  infoDivider: {
-    width: 1,
-    height: 50,
-    backgroundColor: "#6B728020",
-    marginHorizontal: 12,
-  },
+  infoDivider: { width: 1, height: 50, backgroundColor: "#6B728020", marginHorizontal: 12 },
   infoLabel: { color: "#6B7280", fontSize: 12 },
   infoValue: { color: "white", fontSize: 18, fontWeight: "bold" },
   card: {
@@ -256,33 +263,17 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#7C3AED22",
   },
-  cardLabel: {
-    color: "#6B7280",
-    fontSize: 13,
-    marginBottom: 20,
-    letterSpacing: 0.5,
-  },
-  counterRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 16,
-    marginBottom: 12,
-  },
+  cardLabel: { color: "#6B7280", fontSize: 13, marginBottom: 20, letterSpacing: 0.5 },
+  counterRow: { flexDirection: "row", alignItems: "center", gap: 16, marginBottom: 12 },
   counterBtn: {
     backgroundColor: "#7C3AED",
-    width: 48,
-    height: 48,
+    width: 48, height: 48,
     borderRadius: 14,
     alignItems: "center",
     justifyContent: "center",
   },
   counterBtnDisabled: { backgroundColor: "#1E1E38" },
-  counterInput: {
-    color: "white",
-    fontSize: 42,
-    fontWeight: "bold",
-    width: 80,
-  },
+  counterInput: { color: "white", fontSize: 42, fontWeight: "bold", width: 80 },
   counterHint: { color: "#3A3A5C", fontSize: 12 },
   noteCard: {
     backgroundColor: "#7C3AED15",
@@ -305,4 +296,54 @@ const styles = StyleSheet.create({
     marginTop: 8,
   },
   btnConfirmarText: { color: "white", fontSize: 17, fontWeight: "bold" },
+  // ── QR screen ──
+  instruccionCard: {
+    backgroundColor: "#7C3AED15",
+    borderRadius: 12,
+    padding: 14,
+    flexDirection: "row",
+    gap: 10,
+    borderWidth: 1,
+    borderColor: "#7C3AED22",
+    marginBottom: 24,
+    width: "100%",
+  },
+  instruccionText: { color: "#9CA3AF", fontSize: 13, flex: 1, lineHeight: 19 },
+  qrContainer: {
+    backgroundColor: "white",
+    borderRadius: 24,
+    padding: 24,
+    alignItems: "center",
+    marginBottom: 24,
+    shadowColor: "#7C3AED",
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.3,
+    shadowRadius: 20,
+    elevation: 12,
+  },
+  qrLabel: {
+    color: "#1A1A2E",
+    fontSize: 14,
+    fontWeight: "800",
+    letterSpacing: 4,
+    marginBottom: 16,
+  },
+  qrImage: { width: 240, height: 240 },
+  qrSubLabel: {
+    color: "#6B7280",
+    fontSize: 12,
+    marginTop: 16,
+    textAlign: "center",
+  },
+  btnVolver: {
+    backgroundColor: "#7C3AED",
+    borderRadius: 16,
+    paddingVertical: 16,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 10,
+    width: "100%",
+  },
+  btnVolverText: { color: "white", fontSize: 16, fontWeight: "bold" },
 });

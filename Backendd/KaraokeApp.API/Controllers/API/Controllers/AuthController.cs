@@ -57,7 +57,8 @@ public class AuthController : ControllerBase
         {
             Token = token,
             Nombre = usuario.Nombre,
-            Rol = usuario.Rol
+            Rol = usuario.Rol,
+            IdUsuario = usuario.IdUsuario
         });
     }
 }
